@@ -68,6 +68,7 @@ namespace LCardDiags
                 NCh = 4
             };
 
+            adcPar.Chn = new uint[4];
             adcPar.Chn[0] = 0x0;
             adcPar.Chn[1] = 0x1;
             adcPar.Chn[2] = 0x2;
