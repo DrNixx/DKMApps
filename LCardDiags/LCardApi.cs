@@ -5,8 +5,50 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace LCardDiags
 {
+    public enum BoardTypes : uint
+    {
+        NONE    = 0, // no board in slot
+        L1250   = 1, // L1250 board
+        N1250   = 2, // N1250 board (may be not work)
+        L1251   = 3, // L1251 board
+        L1221   = 4, // L1221 board
+        PCIA    = 5, // PCI rev A board
+        PCIB    = 6, // PCI rev B board
+        L264    = 8, // L264 ISA board
+        L305    = 9, // L305 ISA board
+        L1450C  = 10,
+        L1450   = 11,
+        L032    = 12,
+        HI8     = 13,
+        PCIC    = 14,
+
+        LYNX2   = 15,
+        TIGER2  = 16,
+        TIGER3  = 17,
+        LION    = 18,
+
+        L791    = 19,
+        LCPI    = 20, // pci lcpi
+
+        E440    = 30,
+        E140    = 31,
+        E2010   = 32,
+        E270    = 33,
+        CAN_USB = 34,
+        AK9     = 35,
+        LTR010  = 36,
+        LTR021  = 37,
+        E154    = 38,
+        E2010B  = 39,
+        LTR031  = 40,
+        LTR030  = 41,
+
+        E310    = 77
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct PLATA_DESCR
     {
@@ -21,7 +63,7 @@ namespace LCardDiags
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
         public string DspType;
         
-        public ulong Quartz;
+        public uint Quartz;
         
         public ushort IsDacPresent;
         
@@ -38,117 +80,130 @@ namespace LCardDiags
         public ushort[] Custom;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct ADC_PAR_0
-    {
-        public ulong AutoInit;
-        
-        public double dRate;
-        
-        public double dKadr;
-        
-        public double dScale;
-        
-        public ulong Rate;
-        
-        public ulong Kadr;
-        
-        public ulong Scale;
-        
-        public ulong FPDelay;
-        
-        public ulong SynchroType;
-        
-        public ulong SynchroSensitivity;
-        
-        public ulong SynchroMode;
-        
-        public ulong AdChannel;
-        
-        public ulong AdPorog;
-        
-        public ulong NCh;
-        
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-        public ulong[] Chn;
-        
-        public ulong IrqEna;
-        
-        public ulong AdcEna;
-    }
-
     [StructLayout(LayoutKind.Sequential)]
     public struct SLOT_PARAM
     {
-        public ulong Base;
+        public uint Base;
         
-        public ulong BaseL;
+        public uint BaseL;
         
-        public ulong Base1;
+        public uint Base1;
         
-        public ulong BaseL1;
+        public uint BaseL1;
         
-        public ulong Mem;
+        public uint Mem;
         
-        public ulong MemL;
+        public uint MemL;
         
-        public ulong Mem1;
+        public uint Mem1;
         
-        public ulong MemL1;
+        public uint MemL1;
         
-        public ulong Irq;
+        public uint Irq;
         
-        public ulong BoardType;
+        public uint BoardType;
         
-        public ulong DSPType;
+        public uint DSPType;
         
-        public ulong Dma;
+        public uint Dma;
         
-        public ulong DmaDac;
+        public uint DmaDac;
         
-        public ulong DTA_REG;
+        public uint DTA_REG;
         
-        public ulong IDMA_REG;
+        public uint IDMA_REG;
         
-        public ulong CMD_REG;
+        public uint CMD_REG;
         
-        public ulong IRQ_RST;
+        public uint IRQ_RST;
         
-        public ulong DTA_ARRAY;
+        public uint DTA_ARRAY;
         
-        public ulong RDY_REG;
+        public uint RDY_REG;
         
-        public ulong CFG_REG;
+        public uint CFG_REG;
     }
 
 
     public struct WASYNC_PAR
     {
-        public ulong s_Type;
+        public uint s_Type;
         
-        public ulong FIFO;
+        public uint FIFO;
         
-        public ulong IrqStep;
+        public uint IrqStep;
         
-        public ulong Pages;
+        public uint Pages;
         
-        public double dRate;
+        public uint dRate;
         
-        public ulong Rate;
+        public uint Rate;
         
-        public ulong NCh;
+        public uint NCh;
         
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-        public ulong[] Chn;
+        public uint[] Chn;
         
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]        
-        public ulong[] Data;
+        public uint[] Data;
 
-        public ulong Mode;
+        public uint Mode;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct WADC_PAR_0
+    {
+        public uint s_Type;
+        public uint FIFO;
+        public uint IrqStep;
+        public uint Pages;
+
+        public uint AutoInit;
+
+        public double dRate;
+        public double dKadr;
+        public double dScale;
+        public uint Rate;
+        public uint Kadr;
+        public uint Scale;
+        public uint FPDelay;
+
+        public uint SynchroType;
+        public uint SynchroSensitivity;
+        public uint SynchroMode;
+        public uint AdChannel;
+        public uint AdPorog;
+        public uint NCh;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
+        public uint[] Chn;
+
+        public uint IrqEna;
+
+        public uint AdcEna;
     }
 
     public static class LCardApi
     {
+        // define s_Type for FillDAQparameters
+        public const int L_ADC_PARAM = 1;
+        public const int L_DAC_PARAM = 2;
+
+        public const int CASE_DAC_PAR_0 = 0;
+        public const int CASE_DAC_PAR_1 = 1;
+        public const int CASE_ADC_PAR_0 = 2;
+        public const int CASE_ADC_PAR_1 = 3;
+
+        public const int L_STREAM_NULL = 0;
+        public const int L_STREAM_ADC = 1;
+        public const int L_STREAM_DAC = 2;
+        public const int L_STREAM_TTLIN = 3;
+        public const int L_STREAM_TTLOUT = 4;
+        public const int L_STREAM_FMETER = 5;
+        public const int L_STREAM_DDS = 6;
+
+
+
 #if WIN64
         const string WLCompDll = "wlcomp64.dll";
 #else
@@ -162,56 +217,56 @@ namespace LCardDiags
 #endif
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint LoadAPIDLL(string dllname);
+        public static extern ulong LoadAPIDLL(string dllname);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint FreeAPIDLL(ref uint hDll);
+        public static extern uint FreeAPIDLL(ref ulong hDll);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CallCreateInstance(ref uint hDll, uint Slot, ref uint Err);
+        public static extern IntPtr CallCreateInstance(ref ulong hDll, uint Slot, ref uint Err);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint OpenLDevice(ref uint hObj);
+        public static extern uint OpenLDevice(ref IntPtr hObj);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CloseLDevice(ref uint hObj);
+        public static extern uint CloseLDevice(ref IntPtr hObj);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint LoadBios(ref uint hObj, string BiosName);
+        public static extern uint LoadBios(ref IntPtr hObj, string BiosName);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint IoAsync(ref uint hObj, ref WASYNC_PAR sp);
+        public static extern uint IoAsync(ref IntPtr hObj, ref WASYNC_PAR sp);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint PlataTest(ref uint hObj);
+        public static extern uint PlataTest(ref IntPtr hObj);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint ReadPlataDescr(ref uint hObj, ref PLATA_DESCR pd);
+        public static extern uint ReadPlataDescr(ref IntPtr hObj, out PLATA_DESCR pd);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint StartLDevice(ref uint hObj);
+        public static extern uint StartLDevice(ref IntPtr hObj);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint RequestBufferStream(ref uint hObj, ref uint UsedSize, uint StreamId);
+        public static extern uint RequestBufferStream(ref IntPtr hObj, ref uint UsedSize, uint StreamId);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint FillDAQparameters(ref uint hObj, ref ADC_PAR_0 sp, uint sp_type);
+        public static extern uint FillDAQparameters(ref IntPtr hObj, ref WADC_PAR_0 sp, uint sp_type);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint SetParametersStream(ref uint hObj, ref ADC_PAR_0 sp, uint sp_type, ref uint UsedSize, ref IntPtr Data, ref IntPtr Sync, uint StreamId);
+        public static extern uint SetParametersStream(ref IntPtr hObj, ref WADC_PAR_0 sp, uint sp_type, ref uint UsedSize, ref IntPtr Data, ref IntPtr Sync, uint StreamId);
 
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetSlotParam(ref uint hObj, out SLOT_PARAM slPar);
+        public static extern uint GetSlotParam(ref IntPtr hObj, out SLOT_PARAM slPar);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint InitStartLDevice(ref uint hObj);
+        public static extern uint InitStartLDevice(ref IntPtr hObj);
         
         [DllImport(WLCompDll, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint StopLDevice(ref uint hObj);
+        public static extern uint StopLDevice(ref IntPtr hObj);
 
-        public static uint Init()
+        public static IntPtr Init()
         {
-            uint hDll;
+            ulong hDll;
             uint Err = 0;
 
             string s = LCompDll;
