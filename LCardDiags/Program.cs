@@ -57,7 +57,7 @@ namespace LCardDiags
             {
                 s_Type = LCardApi.L_ADC_PARAM,
                 AutoInit = 1,
-                dRate = 100.0,
+                dRate = 100.0D,
                 dKadr = 0,
                 dScale = 0,
                 SynchroType = 3,
@@ -68,7 +68,7 @@ namespace LCardDiags
                 NCh = 4
             };
 
-            adcPar.Chn = new uint[4];
+            adcPar.Chn = new uint[128];
             adcPar.Chn[0] = 0x0;
             adcPar.Chn[1] = 0x1;
             adcPar.Chn[2] = 0x2;
@@ -89,8 +89,8 @@ namespace LCardDiags
             Console.WriteLine("Pages:               {0}", adcPar.Pages);
             Console.WriteLine("IrqStep:             {0}", adcPar.IrqStep);
             Console.WriteLine("FIFO:                {0}", adcPar.FIFO);
-            Console.WriteLine("Rate:                {0}", adcPar.dRate);
-            Console.WriteLine("Kadr:                {0}", adcPar.dKadr);
+            Console.WriteLine("Rate:                {0:F}", adcPar.dRate);
+            Console.WriteLine("Kadr:                {0:F}", adcPar.dKadr);
 
             var IrqStep = adcPar.IrqStep;
             var pages = adcPar.Pages;

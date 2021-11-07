@@ -49,7 +49,7 @@ namespace LCardDiags
         E310    = 77
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public struct PLATA_DESCR
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
@@ -58,7 +58,7 @@ namespace LCardDiags
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
         public string BrdName;
 
-        public byte Rev;
+        public char Rev;
         
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
         public string DspType;
@@ -80,7 +80,7 @@ namespace LCardDiags
         public ushort[] Custom;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct SLOT_PARAM
     {
         public uint Base;
@@ -150,7 +150,7 @@ namespace LCardDiags
         public uint Mode;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct WADC_PAR_0
     {
         public uint s_Type;
