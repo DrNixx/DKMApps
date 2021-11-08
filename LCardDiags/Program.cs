@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LCardLib;
+using System;
 
 namespace LCardDiags
 {
@@ -10,21 +7,21 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
-            var hIfc = LCardApi.Init();
+            LCardApi.OpenSlot(0);
 
-            var err = LCardApi.OpenLDevice(ref hIfc);
-            Console.WriteLine("OpenLDevice Handle {0}", err);
+            var h = LCardApi.OpenLDevice();
+            Console.WriteLine("OpenLDevice Handle {0}", h);
 
-            err = LCardApi.LoadBios(ref hIfc, "l761");
+            var err = LCardApi.LoadBios("l761");
             Console.WriteLine("LoadBios Status: {0}", err);
 
-            var Err = LCardApi.PlataTest(ref hIfc);
+            var Err = LCardApi.PlataTest();
 
             Console.WriteLine("Plata test {0:X}", Err);
 
             Console.WriteLine("Slot parameters");
 
-            LCardApi.GetSlotParam(ref hIfc, out SLOT_PARAM sl);
+            LCardApi.GetSlotParam(out SLOT_PARAM sl);
 
             Console.WriteLine("Base    {0:X}", sl.Base);
             Console.WriteLine("BaseL   {0:X}", sl.BaseL);
@@ -38,7 +35,7 @@ namespace LCardDiags
             Console.ReadKey();
 
             Console.WriteLine("Read FLASH");
-            LCardApi.ReadPlataDescr(ref hIfc, out PLATA_DESCR pd);
+            LCardApi.ReadPlataDescr(out PLATA_DESCR pd);
             Console.WriteLine("SerNum       {0}", pd.SerNum);
             Console.WriteLine("BrdName      {0}", pd.BrdName);
             Console.WriteLine("Rev          {0}", pd.Rev);
@@ -50,7 +47,7 @@ namespace LCardDiags
             Console.ReadKey();
 
             uint bufferSize = 10000000;
-            LCardApi.RequestBufferStream(ref hIfc, ref bufferSize, LCardApi.L_STREAM_ADC);
+            LCardApi.RequestBufferStream(ref bufferSize, LCardApi.L_STREAM_ADC);
             Console.WriteLine("Allocated memory size(word): {0}", bufferSize);
 
             WADC_PAR_0 adcPar = new WADC_PAR_0
@@ -82,8 +79,8 @@ namespace LCardDiags
             IntPtr Sync = new IntPtr();
             IntPtr Data = new IntPtr();
 
-            LCardApi.FillDAQparameters(ref hIfc, ref adcPar, LCardApi.CASE_ADC_PAR_0);
-            LCardApi.SetParametersStream(ref hIfc, ref adcPar, LCardApi.CASE_ADC_PAR_0, ref bufferSize, ref Data, ref Sync, LCardApi.L_STREAM_ADC);
+            LCardApi.FillDAQparameters(ref adcPar, LCardApi.CASE_ADC_PAR_0);
+            LCardApi.SetParametersStream(ref adcPar, LCardApi.CASE_ADC_PAR_0, ref bufferSize, ref Data, ref Sync, LCardApi.L_STREAM_ADC);
 
             Console.WriteLine("Buffer size(points): {0}", bufferSize);
             Console.WriteLine("Pages:               {0}", adcPar.Pages);
@@ -97,6 +94,8 @@ namespace LCardDiags
 
             Console.WriteLine("Press any key");
             Console.ReadKey();
+
+
         }
     }
 }
