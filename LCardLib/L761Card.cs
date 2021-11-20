@@ -40,6 +40,9 @@ namespace LCardLib
 
             if (LCardApi.OpenSlot(Slot) && (LCardApi.OpenLDevice() != INVALID_HANDLE_VALUE))
             {
+                this.IsPresent = (LCardApi.ReadPlataDescr(out PLATA_DESCR pd) == LCardApi.L_SUCCESS);
+                this.IsPresent &= (LCardApi.LoadBios(pd.BrdName) == LCardApi.L_SUCCESS);
+                this.IsPresent &= (LCardApi.PlataTest() == LCardApi.L_SUCCESS);
                 /*
                  * // определить наличие карты
             if (OpenLDevice(FSlot + 50, @FDev) <> INVALID_HANDLE_VALUE) and
