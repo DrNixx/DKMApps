@@ -24,7 +24,7 @@ namespace LCardLib
         private WADC_PAR_0 FADC_Par;
         private PLATA_DESCR FPlata_Desc;
         private uint FBufferSize;
-        private int PrevSyncValue;
+        private uint PrevSyncValue;
         private IntPtr FPSync;
         private IntPtr FPData;
         private uint FPackSize; // сколько отсчетов необходимо осреднять
@@ -66,19 +66,86 @@ namespace LCardLib
             return IsPresent;
         }
 
-        public override int ReadValue(bool stopCondition)
+        public override int ReadValue(bool stopCondition = false)
         {
-            throw new NotImplementedException();
+            var Result = 0;
+            if (!this.IsReading) {
+                return 0;
+            }
+            
+            // ждем окончания чтения
+            var begSync = this.PrevSyncValue;
+            var endSync = begSync + this.FPackSize - 1;
+            if (endSync >= this.FBufferSize) {
+                endSync = endSync - this.FBufferSize;
+            }
+
+            //  raise EADCCardException.CreateFmt('begSync %p endSync %p FBufferSize %x FPSync^ %x)!', [pointer(begSync), pointer(endSync), FBufferSize, FPSync^]);
+            bool stop = false;
+            long delta = 0;
+
+            var Ticks = Environment.TickCount;
+            do {
+                System.Threading.Thread.Sleep(0);
+                stop = stopCondition || (!this.IsReading);
+                delta = (Marshal.ReadInt32(this.FPSync) - begSync);
+                if (delta < 0) {
+                    delta = delta + (int)this.FBufferSize;
+                }
+
+                var deltaTicks = Environment.TickCount;
+                if (deltaTicks != Ticks) {
+                    // по типу учитываем переполнение
+                    if (deltaTicks > Ticks) {
+                        deltaTicks = deltaTicks - Ticks;
+                    } else {
+                        deltaTicks = Int32.MaxValue - Ticks + deltaTicks;
+                    }
+
+                    if (deltaTicks > 2000) { // если крутимся больше 2х секунд
+                        throw new Exception(string.Format("Ошибка чтения (Прочитано {0}, буфер {1})!", delta, this.FBufferSize));
+                    }
+                }
+            } while (stop || (delta > this.FPackSize));
+        
+            if (stop) {
+                return 0;
+            }
+        
+            // отмечаем начало и конец буфера с данными
+            this.PrevSyncValue = endSync + 1;
+            var SumValue = 0;
+            if (endSync < begSync) {
+                // буфер завернулся, собираем из 2х половинок
+                short[] dataArray1 = new short[FBufferSize - begSync + 1];
+                Marshal.Copy(this.FPData, dataArray1, (int)begSync, dataArray1.Length);
+
+                short[] dataArray2 = new short[endSync + 1];
+                Marshal.Copy(this.FPData, dataArray1, 0, (int)(endSync + 1));
+
+                SumValue = dataArray1.Sum(x => x) + dataArray2.Sum(x => x);
+            } else {
+                short[] dataArray = new short[endSync - begSync + 1];
+                Marshal.Copy(this.FPData, dataArray, 0, dataArray.Length);
+                SumValue = dataArray.Sum(x => x);
+            }
+         
+            // осреднить
+            if (this.FPackSize > 0) {
+                Result = (int)(SumValue / FPackSize);
+            }
+
+            return Result;
         }
 
         public override bool StartRead()
         {
-            var PrevSyncValue = 0;
-            if ((!IsPresent) || IsReading) {
+            this.PrevSyncValue = 0;
+            if ((!this.IsPresent) || this.IsReading) {
                 return false;
             }
 
-            IsReading = false;
+            this.IsReading = false;
 
             this.FADC_Par = new WADC_PAR_0
             {
@@ -150,7 +217,7 @@ namespace LCardLib
 
                 if (this.IsReading)
                 {
-                    PrevSyncValue = Marshal.ReadInt32(this.FPSync);
+                    this.PrevSyncValue = (uint)Marshal.ReadInt32(this.FPSync);
                 }
 
                 return this.IsReading;

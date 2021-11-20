@@ -12,6 +12,11 @@ namespace LCardDiags
             var start = card.StartRead();
             if (start)
             {
+                for (var i = 0; i < 10; i++)
+                {
+                    var d = card.ReadValue()
+                }
+
                 card.StopRead();
             }
 

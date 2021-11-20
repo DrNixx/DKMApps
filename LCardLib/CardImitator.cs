@@ -39,7 +39,7 @@ namespace LCardLib
             fReading = false;
         }
 
-        public override int ReadValue(bool stopCondition)
+        public override int ReadValue(bool stopCondition = false)
         {
             //  Sleep(1000 div Freq);
             System.Threading.Thread.Sleep(1);
