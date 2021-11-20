@@ -103,6 +103,8 @@ namespace LCardLib
 
         private static ulong hDll;
 
+        private static uint lastError;
+
         private static IntPtr hIfc = IntPtr.Zero;
 
         private static readonly Destructor Finalise = new Destructor();
@@ -129,45 +131,70 @@ namespace LCardLib
             return WLCompStub.OpenLDevice(ref hIfc);
         }
 
-        public static uint CloseLDevice()
+        public static bool CloseLDevice()
         {
-            return WLCompStub.CloseLDevice(ref hIfc);
+            lastError = WLCompStub.CloseLDevice(ref hIfc);
+            return (lastError == L_SUCCESS);
         }
 
-
-        public static uint LoadBios(string BiosName)
+        public static bool InitStartLDevice()
         {
-            return WLCompStub.LoadBios(ref hIfc, BiosName);
+            lastError = WLCompStub.InitStartLDevice(ref hIfc);
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint PlataTest()
+        public static bool StartLDevice()
         {
-            return WLCompStub.PlataTest(ref hIfc);
+            lastError = WLCompStub.StartLDevice(ref hIfc); 
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint GetSlotParam(out SLOT_PARAM slPar)
+        public static bool StopLDevice()
         {
-            return WLCompStub.GetSlotParam(ref hIfc, out slPar);
+            lastError = WLCompStub.StopLDevice(ref hIfc);
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint ReadPlataDescr(out PLATA_DESCR pd)
+        public static bool LoadBios(string BiosName)
         {
-            return WLCompStub.ReadPlataDescr(ref hIfc, out pd);
+            lastError = WLCompStub.LoadBios(ref hIfc, BiosName);
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint RequestBufferStream(ref uint UsedSize, uint StreamId)
+        public static bool PlataTest()
         {
-            return WLCompStub.RequestBufferStream(ref hIfc, ref UsedSize, StreamId);
+            lastError = WLCompStub.PlataTest(ref hIfc);
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint FillDAQparameters(ref WADC_PAR_0 sp, uint sp_type)
+        public static bool GetSlotParam(out SLOT_PARAM slPar)
         {
-            return WLCompStub.FillDAQparameters(ref hIfc, ref sp, sp_type);
+            lastError = WLCompStub.GetSlotParam(ref hIfc, out slPar);
+            return (lastError == L_SUCCESS);
         }
 
-        public static uint SetParametersStream(ref WADC_PAR_0 sp, uint sp_type, ref uint UsedSize, ref IntPtr Data, ref IntPtr Sync, uint StreamId)
+        public static bool ReadPlataDescr(out PLATA_DESCR pd)
         {
-            return WLCompStub.SetParametersStream(ref hIfc, ref sp, sp_type, ref UsedSize, ref Data, ref Sync, StreamId);
+            lastError = WLCompStub.ReadPlataDescr(ref hIfc, out pd);
+            return (lastError == L_SUCCESS);
+        }
+
+        public static bool RequestBufferStream(ref uint UsedSize, uint StreamId)
+        {
+            lastError = WLCompStub.RequestBufferStream(ref hIfc, ref UsedSize, StreamId);
+            return (lastError == L_SUCCESS);
+        }
+
+        public static bool FillDAQparameters(ref WADC_PAR_0 sp, uint sp_type)
+        {
+            lastError = WLCompStub.FillDAQparameters(ref hIfc, ref sp, sp_type);
+            return (lastError == L_SUCCESS);
+        }
+
+        public static bool SetParametersStream(ref WADC_PAR_0 sp, uint sp_type, ref uint UsedSize, ref IntPtr Data, ref IntPtr Sync, uint StreamId)
+        {
+            lastError = WLCompStub.SetParametersStream(ref hIfc, ref sp, sp_type, ref UsedSize, ref Data, ref Sync, StreamId);
+            return (lastError == L_SUCCESS);
         }
 
         private sealed class Destructor

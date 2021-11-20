@@ -9,6 +9,12 @@ namespace LCardDiags
         {
             var card = new L761Card();
             card.InitCard(1000);
+            var start = card.StartRead();
+            if (start)
+            {
+                card.StopRead();
+            }
+
 
             /*
             LCardApi.OpenSlot(0);
