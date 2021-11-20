@@ -7,6 +7,10 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
+            var card = new L761Card();
+            card.InitCard(1000);
+
+            /*
             LCardApi.OpenSlot(0);
 
             var h = LCardApi.OpenLDevice();
@@ -94,8 +98,7 @@ namespace LCardDiags
 
             Console.WriteLine("Press any key");
             Console.ReadKey();
-
-
+            */
         }
     }
 }
