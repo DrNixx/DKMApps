@@ -118,7 +118,7 @@ namespace LCardLib
             // вычислить FPackSize - подбираем так,
             // чтобы частота опроса была как можно ближе к требуемой
             for (uint i = minPackSize; i <= maxPackSize; i++) {
-                var delta = (1000000 / (Freq * i)) - Math.Ceiling(1000000 / (Freq * i));
+                var delta = Math.Abs((1000000 / (Freq * i)) - Math.Ceiling(1000000 / (Freq * i)));
                 if (delta < minDelta)
                 {
                     minDelta = delta;
@@ -140,7 +140,7 @@ namespace LCardLib
             {
                 this.FADC_Par.AutoInit = 1;  // указывает, что сбор данных циклический
                 this.FPackSize = this.FADC_Par.IrqStep;
-                this.Freq = this.FADC_Par.Rate * 1000D / FPackSize; // настоящая частота сбора данных
+                this.Freq = this.FADC_Par.dRate * 1000D / FPackSize; // настоящая частота сбора данных
                 this.FBufferSize = this.FADC_Par.IrqStep * FADC_Par.Pages * 16;
                 this.IsReading = 
                     LCardApi.RequestBufferStream(ref this.FBufferSize, LCardApi.L_STREAM_ADC) &
