@@ -64,7 +64,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="L761.bio" />
+    <None Include="L761.bio">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
