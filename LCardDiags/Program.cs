@@ -8,18 +8,21 @@ namespace LCardDiags
         static void Main(string[] args)
         {
             var card = new L761Card();
-            card.InitCard(1000);
+            card.InitCard(160);
             var start = card.StartRead();
             if (start)
             {
                 for (var i = 0; i < 10; i++)
                 {
-                    var d = card.ReadValue()
+                    var d = card.ReadValue();
+                    Console.WriteLine(d);
                 }
 
                 card.StopRead();
             }
 
+            card.StopCard();
+            card.Dispose();
 
             /*
             LCardApi.OpenSlot(0);
@@ -110,6 +113,8 @@ namespace LCardDiags
             Console.WriteLine("Press any key");
             Console.ReadKey();
             */
+            Console.WriteLine("Press any key");
+            Console.ReadKey();
         }
     }
 }
