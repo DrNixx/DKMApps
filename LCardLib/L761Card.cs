@@ -117,7 +117,7 @@ namespace LCardLib
             var SumValue = 0;
             if (endSync < begSync) {
                 // буфер завернулся, собираем из 2х половинок
-                short[] dataArray1 = new short[FBufferSize - begSync + 1];
+                short[] dataArray1 = new short[FBufferSize - begSync];
                 Marshal.Copy(this.FPData, dataArray1, (int)begSync, dataArray1.Length);
 
                 short[] dataArray2 = new short[endSync + 1];
