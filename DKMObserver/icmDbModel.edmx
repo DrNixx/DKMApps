@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище dbIcmModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="hstObservationDetailData">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+            <PropertyRef Name="Item" />
+            <PropertyRef Name="ChunkNum" />
+          </Key>
+          <Property Name="PatientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="HistoryItem" Type="int" Nullable="false" />
+          <Property Name="Item" Type="int" Nullable="false" />
+          <Property Name="ChunkNum" Type="int" Nullable="false" />
+          <Property Name="Data" Type="image" />
+          <Property Name="RecStatus" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CreatorID" Type="uniqueidentifier" />
+          <Property Name="WhenCreated" Type="datetime" Nullable="false" />
+          <Property Name="EditorID" Type="uniqueidentifier" />
+          <Property Name="WhenEdited" Type="datetime" />
+          <Property Name="WorkstationName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="hstObservationDetails">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PatientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="HistoryItem" Type="int" Nullable="false" />
+          <Property Name="Item" Type="int" Nullable="false" />
+          <Property Name="SortOrder" Type="int" />
+          <Property Name="ObservDataTypeCode" Type="int" />
+          <Property Name="PointName" Type="varchar" MaxLength="100" />
+          <Property Name="ReportGroupCode" Type="int" />
+          <Property Name="OrganCode" Type="int" />
+          <Property Name="Report" Type="bit" />
+          <Property Name="Rating" Type="int" />
+          <Property Name="Thumbnail" Type="image" />
+          <Property Name="DataType" Type="varchar" MaxLength="50" />
+          <Property Name="DataLocation" Type="varchar" MaxLength="255" />
+          <Property Name="Notes" Type="text" />
+          <Property Name="RecStatus" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="CreatorID" Type="uniqueidentifier" />
+          <Property Name="WhenCreated" Type="datetime" Nullable="false" />
+          <Property Name="EditorID" Type="uniqueidentifier" />
+          <Property Name="WhenEdited" Type="datetime" />
+          <Property Name="WorkstationName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="hstObservations">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+          </Key>
+          <Property Name="PatientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="HistoryItem" Type="int" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="int" />
+          <Property Name="ObservReport" Type="text" />
+          <Property Name="ObservNotes" Type="text" />
+          <Property Name="TemplateName" Type="varchar" MaxLength="255" />
+          <Property Name="NotesTemplateName" Type="varchar" MaxLength="255" />
+          <Property Name="ObservTime" Type="datetime" />
+          <Property Name="ObservDeviceType" Type="varchar" MaxLength="255" />
+          <Property Name="ObservDeviceID" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="listObservPlanDetails">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PlanCode" Type="int" Nullable="false" />
+          <Property Name="Item" Type="int" Nullable="false" />
+          <Property Name="OrganCode" Type="int" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="listObservPlans">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+          </Key>
+          <Property Name="PlanCode" Type="int" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="int" />
+          <Property Name="PlanName" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <Association Name="FK_hstObservationDetails_hstObservationDetailData">
+          <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="hstObservationDetailData" Type="Self.hstObservationDetailData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hstObservationDetails">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+              <PropertyRef Name="Item" />
+            </Principal>
+            <Dependent Role="hstObservationDetailData">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+              <PropertyRef Name="Item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listObservPlans_listObservPlanDetails">
+          <End Role="listObservPlans" Type="Self.listObservPlans" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listObservPlans">
+              <PropertyRef Name="PlanCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="PlanCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observation_Details">
+          <End Role="hstObservations" Type="Self.hstObservations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hstObservations">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+            </Principal>
+            <Dependent Role="hstObservationDetails">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище dbIcmModelContainer">
+          <EntitySet Name="hstObservationDetailData" EntityType="Self.hstObservationDetailData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hstObservationDetails" EntityType="Self.hstObservationDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hstObservations" EntityType="Self.hstObservations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="listObservPlanDetails" EntityType="Self.listObservPlanDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="listObservPlans" EntityType="Self.listObservPlans" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_hstObservationDetails_hstObservationDetailData" Association="Self.FK_hstObservationDetails_hstObservationDetailData">
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+            <End Role="hstObservationDetailData" EntitySet="hstObservationDetailData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listObservPlans_listObservPlanDetails" Association="Self.FK_listObservPlans_listObservPlanDetails">
+            <End Role="listObservPlans" EntitySet="listObservPlans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observation_Details" Association="Self.FK_Observation_Details">
+            <End Role="hstObservations" EntitySet="hstObservations" />
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbIcmModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="hstObservationDetailData">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+            <PropertyRef Name="Item" />
+            <PropertyRef Name="ChunkNum" />
+          </Key>
+          <Property Name="PatientID" Type="Guid" Nullable="false" />
+          <Property Name="HistoryItem" Type="Int32" Nullable="false" />
+          <Property Name="Item" Type="Int32" Nullable="false" />
+          <Property Name="ChunkNum" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="RecStatus" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatorID" Type="Guid" />
+          <Property Name="WhenCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EditorID" Type="Guid" />
+          <Property Name="WhenEdited" Type="DateTime" Precision="3" />
+          <Property Name="WorkstationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="hstObservationDetails" Relationship="Self.FK_hstObservationDetails_hstObservationDetailData" FromRole="hstObservationDetailData" ToRole="hstObservationDetails" />
+        </EntityType>
+        <EntityType Name="hstObservationDetails">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PatientID" Type="Guid" Nullable="false" />
+          <Property Name="HistoryItem" Type="Int32" Nullable="false" />
+          <Property Name="Item" Type="Int32" Nullable="false" />
+          <Property Name="SortOrder" Type="Int32" />
+          <Property Name="ObservDataTypeCode" Type="Int32" />
+          <Property Name="PointName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ReportGroupCode" Type="Int32" />
+          <Property Name="OrganCode" Type="Int32" />
+          <Property Name="Report" Type="Boolean" />
+          <Property Name="Rating" Type="Int32" />
+          <Property Name="Thumbnail" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DataType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DataLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RecStatus" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatorID" Type="Guid" />
+          <Property Name="WhenCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EditorID" Type="Guid" />
+          <Property Name="WhenEdited" Type="DateTime" Precision="3" />
+          <Property Name="WorkstationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="hstObservationDetailData" Relationship="Self.FK_hstObservationDetails_hstObservationDetailData" FromRole="hstObservationDetails" ToRole="hstObservationDetailData" />
+          <NavigationProperty Name="hstObservations" Relationship="Self.FK_Observation_Details" FromRole="hstObservationDetails" ToRole="hstObservations" />
+        </EntityType>
+        <EntityType Name="hstObservations">
+          <Key>
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="HistoryItem" />
+          </Key>
+          <Property Name="PatientID" Type="Guid" Nullable="false" />
+          <Property Name="HistoryItem" Type="Int32" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="Int32" />
+          <Property Name="ObservReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ObservNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TemplateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NotesTemplateName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ObservTime" Type="DateTime" Precision="3" />
+          <Property Name="ObservDeviceType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ObservDeviceID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="hstObservationDetails" Relationship="Self.FK_Observation_Details" FromRole="hstObservations" ToRole="hstObservationDetails" />
+        </EntityType>
+        <EntityType Name="listObservPlanDetails">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PlanCode" Type="Int32" Nullable="false" />
+          <Property Name="Item" Type="Int32" Nullable="false" />
+          <Property Name="OrganCode" Type="Int32" />
+          <Property Name="Parent" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="listObservPlans" Relationship="Self.FK_listObservPlans_listObservPlanDetails" FromRole="listObservPlanDetails" ToRole="listObservPlans" />
+        </EntityType>
+        <EntityType Name="listObservPlans">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+          </Key>
+          <Property Name="PlanCode" Type="Int32" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="Int32" />
+          <Property Name="PlanName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="listObservPlanDetails" Relationship="Self.FK_listObservPlans_listObservPlanDetails" FromRole="listObservPlans" ToRole="listObservPlanDetails" />
+        </EntityType>
+        <Association Name="FK_hstObservationDetails_hstObservationDetailData">
+          <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="hstObservationDetailData" Type="Self.hstObservationDetailData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hstObservationDetails">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+              <PropertyRef Name="Item" />
+            </Principal>
+            <Dependent Role="hstObservationDetailData">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+              <PropertyRef Name="Item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observation_Details">
+          <End Role="hstObservations" Type="Self.hstObservations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="hstObservations">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+            </Principal>
+            <Dependent Role="hstObservationDetails">
+              <PropertyRef Name="PatientID" />
+              <PropertyRef Name="HistoryItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listObservPlans_listObservPlanDetails">
+          <End Role="listObservPlans" Type="Self.listObservPlans" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listObservPlans">
+              <PropertyRef Name="PlanCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="PlanCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbIcmEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="hstObservationDetailData" EntityType="Self.hstObservationDetailData" />
+          <EntitySet Name="hstObservationDetails" EntityType="Self.hstObservationDetails" />
+          <EntitySet Name="hstObservations" EntityType="Self.hstObservations" />
+          <EntitySet Name="listObservPlanDetails" EntityType="Self.listObservPlanDetails" />
+          <EntitySet Name="listObservPlans" EntityType="Self.listObservPlans" />
+          <AssociationSet Name="FK_hstObservationDetails_hstObservationDetailData" Association="Self.FK_hstObservationDetails_hstObservationDetailData">
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+            <End Role="hstObservationDetailData" EntitySet="hstObservationDetailData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observation_Details" Association="Self.FK_Observation_Details">
+            <End Role="hstObservations" EntitySet="hstObservations" />
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listObservPlans_listObservPlanDetails" Association="Self.FK_listObservPlans_listObservPlanDetails">
+            <End Role="listObservPlans" EntitySet="listObservPlans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище dbIcmModelContainer" CdmEntityContainer="dbIcmEntities">
+          <EntitySetMapping Name="hstObservationDetailData">
+            <EntityTypeMapping TypeName="dbIcmModel.hstObservationDetailData">
+              <MappingFragment StoreEntitySet="hstObservationDetailData">
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="HistoryItem" ColumnName="HistoryItem" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="ChunkNum" ColumnName="ChunkNum" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="RecStatus" ColumnName="RecStatus" />
+                <ScalarProperty Name="CreatorID" ColumnName="CreatorID" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
+                <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+                <ScalarProperty Name="WhenEdited" ColumnName="WhenEdited" />
+                <ScalarProperty Name="WorkstationName" ColumnName="WorkstationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hstObservationDetails">
+            <EntityTypeMapping TypeName="dbIcmModel.hstObservationDetails">
+              <MappingFragment StoreEntitySet="hstObservationDetails">
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="HistoryItem" ColumnName="HistoryItem" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="ObservDataTypeCode" ColumnName="ObservDataTypeCode" />
+                <ScalarProperty Name="PointName" ColumnName="PointName" />
+                <ScalarProperty Name="ReportGroupCode" ColumnName="ReportGroupCode" />
+                <ScalarProperty Name="OrganCode" ColumnName="OrganCode" />
+                <ScalarProperty Name="Report" ColumnName="Report" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="DataLocation" ColumnName="DataLocation" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="RecStatus" ColumnName="RecStatus" />
+                <ScalarProperty Name="CreatorID" ColumnName="CreatorID" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
+                <ScalarProperty Name="EditorID" ColumnName="EditorID" />
+                <ScalarProperty Name="WhenEdited" ColumnName="WhenEdited" />
+                <ScalarProperty Name="WorkstationName" ColumnName="WorkstationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hstObservations">
+            <EntityTypeMapping TypeName="dbIcmModel.hstObservations">
+              <MappingFragment StoreEntitySet="hstObservations">
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="HistoryItem" ColumnName="HistoryItem" />
+                <ScalarProperty Name="ObservTypeCode" ColumnName="ObservTypeCode" />
+                <ScalarProperty Name="ObservReport" ColumnName="ObservReport" />
+                <ScalarProperty Name="ObservNotes" ColumnName="ObservNotes" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="NotesTemplateName" ColumnName="NotesTemplateName" />
+                <ScalarProperty Name="ObservTime" ColumnName="ObservTime" />
+                <ScalarProperty Name="ObservDeviceType" ColumnName="ObservDeviceType" />
+                <ScalarProperty Name="ObservDeviceID" ColumnName="ObservDeviceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="listObservPlanDetails">
+            <EntityTypeMapping TypeName="dbIcmModel.listObservPlanDetails">
+              <MappingFragment StoreEntitySet="listObservPlanDetails">
+                <ScalarProperty Name="PlanCode" ColumnName="PlanCode" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="OrganCode" ColumnName="OrganCode" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="listObservPlans">
+            <EntityTypeMapping TypeName="dbIcmModel.listObservPlans">
+              <MappingFragment StoreEntitySet="listObservPlans">
+                <ScalarProperty Name="PlanCode" ColumnName="PlanCode" />
+                <ScalarProperty Name="ObservTypeCode" ColumnName="ObservTypeCode" />
+                <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

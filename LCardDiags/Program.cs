@@ -1,5 +1,6 @@
 ﻿using LCardLib;
 using System;
+using System.Linq;
 
 namespace LCardDiags
 {
@@ -7,6 +8,12 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
+            using (var db = new dbIcmEntities())
+            {
+                var list = db.listObservPlanDetails.ToList();
+            }
+
+
             var card = new L761Card();
             card.InitCard(1000);
             var start = card.StartRead();
@@ -14,7 +21,7 @@ namespace LCardDiags
             {
                 for (var i = 0; i < 10; i++)
                 {
-                    var d = card.ReadValue()
+                    var d = card.ReadValue();
                 }
 
                 card.StopRead();

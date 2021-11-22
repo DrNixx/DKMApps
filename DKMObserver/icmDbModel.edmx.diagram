@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="027ae29046c14b07825785af0d7ce296" Name="Diagram1">
+        <EntityTypeShape EntityType="dbIcmModel.hstObservationDetailData" Width="1.5" PointX="5.25" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbIcmModel.hstObservationDetails" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbIcmModel.hstObservations" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbIcmModel.listObservPlanDetails" Width="1.5" PointX="8" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbIcmModel.listObservPlans" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
+        <AssociationConnector Association="dbIcmModel.FK_hstObservationDetails_hstObservationDetailData" ManuallyRouted="false" />
+        <AssociationConnector Association="dbIcmModel.FK_Observation_Details" ManuallyRouted="false" />
+        <AssociationConnector Association="dbIcmModel.FK_listObservPlans_listObservPlanDetails" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

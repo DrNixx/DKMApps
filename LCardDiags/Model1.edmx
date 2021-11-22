@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище dbIcmModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="listObservPlanDetails">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PlanCode" Type="int" Nullable="false" />
+          <Property Name="Item" Type="int" Nullable="false" />
+          <Property Name="OrganCode" Type="int" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="listObservPlans">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+          </Key>
+          <Property Name="PlanCode" Type="int" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="int" />
+          <Property Name="PlanName" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="listOrgans">
+          <Key>
+            <PropertyRef Name="OrganCode" />
+          </Key>
+          <Property Name="OrganCode" Type="int" Nullable="false" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="OrganName" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+          <Property Name="Picture" Type="image" />
+          <Property Name="Sex" Type="int" />
+        </EntityType>
+        <Association Name="FK_listObservPlans_listObservPlanDetails">
+          <End Role="listObservPlans" Type="Self.listObservPlans" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listObservPlans">
+              <PropertyRef Name="PlanCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="PlanCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listOrgans_listObservPlanDetails">
+          <End Role="listOrgans" Type="Self.listOrgans" Multiplicity="0..1" />
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище dbIcmModelContainer">
+          <EntitySet Name="listObservPlanDetails" EntityType="Self.listObservPlanDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="listObservPlans" EntityType="Self.listObservPlans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="listOrgans" EntityType="Self.listOrgans" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_listObservPlans_listObservPlanDetails" Association="Self.FK_listObservPlans_listObservPlanDetails">
+            <End Role="listObservPlans" EntitySet="listObservPlans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listOrgans_listObservPlanDetails" Association="Self.FK_listOrgans_listObservPlanDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbIcmModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="listObservPlanDetails">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+            <PropertyRef Name="Item" />
+          </Key>
+          <Property Name="PlanCode" Type="Int32" Nullable="false" />
+          <Property Name="Item" Type="Int32" Nullable="false" />
+          <Property Name="OrganCode" Type="Int32" />
+          <Property Name="Parent" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="listObservPlans" Relationship="Self.FK_listObservPlans_listObservPlanDetails" FromRole="listObservPlanDetails" ToRole="listObservPlans" />
+          <NavigationProperty Name="listOrgans" Relationship="Self.FK_listOrgans_listObservPlanDetails" FromRole="listObservPlanDetails" ToRole="listOrgans" />
+        </EntityType>
+        <EntityType Name="listObservPlans">
+          <Key>
+            <PropertyRef Name="PlanCode" />
+          </Key>
+          <Property Name="PlanCode" Type="Int32" Nullable="false" />
+          <Property Name="ObservTypeCode" Type="Int32" />
+          <Property Name="PlanName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="listObservPlanDetails" Relationship="Self.FK_listObservPlans_listObservPlanDetails" FromRole="listObservPlans" ToRole="listObservPlanDetails" />
+        </EntityType>
+        <EntityType Name="listOrgans">
+          <Key>
+            <PropertyRef Name="OrganCode" />
+          </Key>
+          <Property Name="OrganCode" Type="Int32" Nullable="false" />
+          <Property Name="Parent" Type="Int32" />
+          <Property Name="OrganName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Sex" Type="Int32" />
+          <NavigationProperty Name="listObservPlanDetails" Relationship="Self.FK_listOrgans_listObservPlanDetails" FromRole="listOrgans" ToRole="listObservPlanDetails" />
+        </EntityType>
+        <Association Name="FK_listObservPlans_listObservPlanDetails">
+          <End Role="listObservPlans" Type="Self.listObservPlans" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listObservPlans">
+              <PropertyRef Name="PlanCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="PlanCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listOrgans_listObservPlanDetails">
+          <End Role="listOrgans" Type="Self.listOrgans" Multiplicity="0..1" />
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbIcmEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="listObservPlanDetails" EntityType="Self.listObservPlanDetails" />
+          <EntitySet Name="listObservPlans" EntityType="Self.listObservPlans" />
+          <EntitySet Name="listOrgans" EntityType="Self.listOrgans" />
+          <AssociationSet Name="FK_listObservPlans_listObservPlanDetails" Association="Self.FK_listObservPlans_listObservPlanDetails">
+            <End Role="listObservPlans" EntitySet="listObservPlans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listOrgans_listObservPlanDetails" Association="Self.FK_listOrgans_listObservPlanDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище dbIcmModelContainer" CdmEntityContainer="dbIcmEntities">
+          <EntitySetMapping Name="listObservPlanDetails">
+            <EntityTypeMapping TypeName="dbIcmModel.listObservPlanDetails">
+              <MappingFragment StoreEntitySet="listObservPlanDetails">
+                <ScalarProperty Name="PlanCode" ColumnName="PlanCode" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="OrganCode" ColumnName="OrganCode" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="listObservPlans">
+            <EntityTypeMapping TypeName="dbIcmModel.listObservPlans">
+              <MappingFragment StoreEntitySet="listObservPlans">
+                <ScalarProperty Name="PlanCode" ColumnName="PlanCode" />
+                <ScalarProperty Name="ObservTypeCode" ColumnName="ObservTypeCode" />
+                <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="listOrgans">
+            <EntityTypeMapping TypeName="dbIcmModel.listOrgans">
+              <MappingFragment StoreEntitySet="listOrgans">
+                <ScalarProperty Name="OrganCode" ColumnName="OrganCode" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="OrganName" ColumnName="OrganName" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
