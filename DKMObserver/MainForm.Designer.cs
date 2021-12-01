@@ -36,10 +36,10 @@ namespace DKMObserver
             this.IName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Birthday = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SortOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.begTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SortOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historyItemDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.patientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vwHistoryObservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -118,14 +118,6 @@ namespace DKMObserver
             this.Birthday.Name = "Birthday";
             this.Birthday.ReadOnly = true;
             // 
-            // SortOrder
-            // 
-            this.SortOrder.DataPropertyName = "SortOrder";
-            this.SortOrder.HeaderText = "SortOrder";
-            this.SortOrder.Name = "SortOrder";
-            this.SortOrder.ReadOnly = true;
-            this.SortOrder.Visible = false;
-            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
@@ -146,6 +138,14 @@ namespace DKMObserver
             this.endTimeDataGridViewTextBoxColumn.HeaderText = "Окончание";
             this.endTimeDataGridViewTextBoxColumn.Name = "endTimeDataGridViewTextBoxColumn";
             this.endTimeDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // SortOrder
+            // 
+            this.SortOrder.DataPropertyName = "SortOrder";
+            this.SortOrder.HeaderText = "SortOrder";
+            this.SortOrder.Name = "SortOrder";
+            this.SortOrder.ReadOnly = true;
+            this.SortOrder.Visible = false;
             // 
             // historyItemDataGridViewTextBoxColumn
             // 
@@ -189,6 +189,7 @@ namespace DKMObserver
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
