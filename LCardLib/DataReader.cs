@@ -41,7 +41,7 @@ namespace LCardLib
                 if (start)
                 {
                     buffer.Clear();
-                    var simpleCountMax = 100; // diagLen * this.freq;
+                    var simpleCountMax = diagLen * this.freq;
                     do
                     {
                         var val = (short)card.ReadValue(false);

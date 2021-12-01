@@ -127,8 +127,9 @@ namespace DKMObserver
 
             if (wf.ShowDialog() == DialogResult.OK)
             {
-                //var card = new L761Card();
-                var card = new CardImitator();
+                //var card = new CardImitator();
+                var card = new L761Card();
+                
                 var reader = new DataReader(card);
 
                 var progress = new Progress<int>(s => chart1.Series[0].Points.AddY(s));
@@ -140,9 +141,16 @@ namespace DKMObserver
                 var pd = trPlanDetail.SelectedNode.Tag as Organ;
 
                 var data = Compressor.CompressArray(reader.buffer.ToArray());
+                //var data = Compressor.ShortToByte(reader.buffer.ToArray());
 
-                var xml = "<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n<DKMData>\n\t<Samples Comment=\"\" DeviceName=\"\" AquireTime=\"" + DateTime.Now.ToString("yyyy-MM-dd|HH-mm-ss") + "\">\n\t\t"
-                      + "<Sample BegTime=\"0\" Comment=\"\" Frequency=\"160\">" + Encoding.GetEncoding(1251).GetString(data) + "\n\t\t</Sample>\n\t</Samples>\n\t<TimeMarks/>\n</DKMData>\t";
+                var dl = new List<byte>();
+
+                dl.AddRange(Encoding.GetEncoding(1251).GetBytes("<?xml version=\"1.0\" encoding=\"windows-1251\"?>\r\n"));
+                dl.AddRange(Encoding.GetEncoding(1251).GetBytes("<DKMData>\r\n\t<Samples Comment=\"\" DeviceName=\"\" AquireTime=\""));
+                dl.AddRange(Encoding.GetEncoding(1251).GetBytes(DateTime.Now.ToString("yyyy-MM-dd|HH-mm-ss")));
+                dl.AddRange(Encoding.GetEncoding(1251).GetBytes("\">\r\n\t\t<Sample BegTime=\"0\" Comment=\"\" Frequency=\"160\">"));
+                dl.AddRange(data);
+                dl.AddRange(Encoding.GetEncoding(1251).GetBytes("\r\n\t\t</Sample>\r\n\t</Samples>\r\n\t<TimeMarks/>\r\n</DKMData>"));
 
                 var lastItem = db.hstObservationDetails.Max(x => x.Item);
 
@@ -171,7 +179,7 @@ namespace DKMObserver
                 detailData.HistoryItem = this.historyItem;
                 detailData.Item = lastItem + 1;
                 detailData.ChunkNum = 0;
-                detailData.Data = Encoding.GetEncoding(1251).GetBytes(xml);
+                detailData.Data = dl.ToArray();
                 detailData.RecStatus = "add";
                 detailData.WhenCreated = DateTime.Now;
                 detailData.CreatorID = new Guid("10000000-0000-0000-0000-000000000000");

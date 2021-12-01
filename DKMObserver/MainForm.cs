@@ -22,10 +22,15 @@ namespace DKMObserver
 
         private static short[] test = { 1, 2, 333, 276, 33, 221, 228, 22, 11, 98, 14 };
 
+        private byte[] testData;
+
         private void button1_Click(object sender, EventArgs e)
         {
             //var en = Compressor.CompressArray(test);
             //Console.Write(en);
+
+            //var bytes = Compressor.ShortToByte(test);
+            //var test2 = Compressor.ByteToShort(bytes);
 
             var td = new dbIcmDataSet.hstObservationDetailDataDataTable();
             var ad = new hstObservationDetailDataTableAdapter();
@@ -39,9 +44,11 @@ namespace DKMObserver
                 
                 var re = new Regex("(?<=<Sample\\sBegTime=\"\\d+\"\\sComment=\"\"\\sFrequency=\"\\d+\">)(.*)(?=</Sample>)", RegexOptions.Singleline);
                 var s = re.Matches(str);
-                var data = System.Text.Encoding.GetEncoding(1251).GetBytes(s[0].Groups[1].Value);
+                var dataStr = s[0].Groups[1].Value.Replace("&amp;", "&").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"");
+                var data = System.Text.Encoding.GetEncoding(1251).GetBytes(dataStr);
                 var samples = Compressor.UncompressArray(data);
                 Console.WriteLine(samples.Length);
+                var newData = Compressor.CompressArray(samples);
                 str = re.Replace(str, "data");
                 // var x = System.Xml.Linq.XDocument.Parse(str);
                 XmlDocument xDoc = new XmlDocument();

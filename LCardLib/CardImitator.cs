@@ -43,7 +43,8 @@ namespace LCardLib
         {
             //var s = (int)Math.Ceiling(1000 / Freq);
             //System.Threading.Thread.Sleep(s);
-            System.Threading.Thread.Sleep(1);
+            //System.Threading.Thread.Sleep(1);
+            System.Threading.Thread.Sleep(0);
             return rand.Next((MaxValue - MinValue) / 15) + MinValue + (MaxValue - MinValue) * 3 / 5;
         }
 

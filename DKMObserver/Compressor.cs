@@ -23,12 +23,14 @@ namespace DKMObserver
             startInfo.Arguments = fnameIn + " " + fnameOut;
             var p = Process.Start(startInfo);
             p.WaitForExit(1000);
-            var result = GetFileBytes(fnameOut);
+            var bytes = GetFileBytes(fnameOut);
+            var resultStr = Encoding.GetEncoding(1251).GetString(bytes);
+            resultStr = resultStr.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
 
             File.Delete(fnameOut);
             File.Delete(fnameIn);
 
-            return result;
+            return Encoding.GetEncoding(1251).GetBytes(resultStr);
         }
 
         public static short[] UncompressArray(byte[] inpArray)
@@ -43,30 +45,31 @@ namespace DKMObserver
             startInfo.Arguments = fnameIn + " " + fnameOut;
             var p = Process.Start(startInfo);
             p.WaitForExit(1000);
-            var result = GetFileBytes(fnameOut);
+            var bytes = GetFileBytes(fnameOut);
+            //var resultStr = Encoding.GetEncoding(1251).GetString(bytes);
 
             File.Delete(fnameOut);
             File.Delete(fnameIn);
 
-            return ByteToShort(result);
+            return ByteToShort(bytes);
         }
 
-        private static byte[] ShortToByte(short[] intArray)
+        public static byte[] ShortToByte(short[] intArray)
         {
             byte[] result = new byte[intArray.Length * 2];
             Buffer.BlockCopy(intArray, 0, result, 0, result.Length);
             return result;
         }
 
-        private static short[] ByteToShort(byte[] intArray)
+        public static short[] ByteToShort(byte[] intArray)
         {
             short[] result = new short[intArray.Length / 2];
-            Buffer.BlockCopy(intArray, 0, result, 0, result.Length);
+            Buffer.BlockCopy(intArray, 0, result, 0, intArray.Length);
             return result;
         }
 
 
-        private static void SaveBytesToFile(string filename, byte[] bytesToWrite)
+        public static void SaveBytesToFile(string filename, byte[] bytesToWrite)
         {
             if (filename != null && filename.Length > 0 && bytesToWrite != null)
             {
@@ -83,7 +86,7 @@ namespace DKMObserver
             }
         }
 
-        private static byte[] GetFileBytes(string filename)
+        public static byte[] GetFileBytes(string filename)
         {
             if (File.Exists(filename))
             {
