@@ -14,8 +14,6 @@ namespace LCardLib
 
     public class L761Card : ADCCard
     {
-        static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
-
         const uint DefPointsToInt = 100;
         const int DefL761Slot = 0;
         const int DefL761Channel = 1;
@@ -52,7 +50,7 @@ namespace LCardLib
             IsPresent = false;
             Freq = readFreq;
 
-            if (LCardApi.OpenSlot(Slot) && (LCardApi.OpenLDevice() != INVALID_HANDLE_VALUE))
+            if (LCardApi.OpenSlot(Slot) && (LCardApi.OpenLDevice() != LCardApi.INVALID_HANDLE_VALUE))
             {
                 this.IsPresent = 
                     LCardApi.ReadPlataDescr(out this.FPlata_Desc) & 

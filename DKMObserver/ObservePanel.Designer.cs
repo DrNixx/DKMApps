@@ -30,8 +30,8 @@ namespace DKMObserver
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.cbObservPlans = new System.Windows.Forms.ComboBox();
             this.listObservPlansBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -43,10 +43,13 @@ namespace DKMObserver
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnMonitor = new System.Windows.Forms.Button();
+            this.listOrgansBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.listOrgansTableAdapter = new DKMObserver.dbIcmDataSetTableAdapters.listOrgansTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlansBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listOrgansBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -103,14 +106,14 @@ namespace DKMObserver
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(11, 509);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Name = "Series1";
-            this.chart1.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(777, 124);
             this.chart1.TabIndex = 8;
             this.chart1.Text = "chart1";
@@ -129,13 +132,23 @@ namespace DKMObserver
             // btnMonitor
             // 
             this.btnMonitor.Enabled = false;
-            this.btnMonitor.Location = new System.Drawing.Point(472, 453);
+            this.btnMonitor.Location = new System.Drawing.Point(492, 453);
             this.btnMonitor.Name = "btnMonitor";
             this.btnMonitor.Size = new System.Drawing.Size(145, 49);
             this.btnMonitor.TabIndex = 10;
             this.btnMonitor.Text = "Запуск мониторинга";
             this.btnMonitor.UseVisualStyleBackColor = true;
+            this.btnMonitor.Visible = false;
             this.btnMonitor.Click += new System.EventHandler(this.btnMonitor_Click);
+            // 
+            // listOrgansBindingSource
+            // 
+            this.listOrgansBindingSource.DataMember = "listOrgans";
+            this.listOrgansBindingSource.DataSource = this.dbIcmDataSet;
+            // 
+            // listOrgansTableAdapter
+            // 
+            this.listOrgansTableAdapter.ClearBeforeFill = true;
             // 
             // ObservePanel
             // 
@@ -155,6 +168,7 @@ namespace DKMObserver
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listOrgansBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,5 +187,7 @@ namespace DKMObserver
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnMonitor;
+        private System.Windows.Forms.BindingSource listOrgansBindingSource;
+        private dbIcmDataSetTableAdapters.listOrgansTableAdapter listOrgansTableAdapter;
     }
 }

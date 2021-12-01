@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище dbIcmModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище dbIcmModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="hstObservationDetailData">
           <Key>
             <PropertyRef Name="PatientID" />
@@ -88,6 +88,17 @@
           <Property Name="PlanName" Type="varchar" MaxLength="100" />
           <Property Name="Notes" Type="varchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="listOrgans">
+          <Key>
+            <PropertyRef Name="OrganCode" />
+          </Key>
+          <Property Name="OrganCode" Type="int" Nullable="false" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="OrganName" Type="varchar" MaxLength="100" />
+          <Property Name="Notes" Type="varchar" MaxLength="1000" />
+          <Property Name="Picture" Type="image" />
+          <Property Name="Sex" Type="int" />
+        </EntityType>
         <Association Name="FK_hstObservationDetails_hstObservationDetailData">
           <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -120,6 +131,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_listOrgans_hstObservationDetails">
+          <End Role="listOrgans" Type="Self.listOrgans" Multiplicity="0..1" />
+          <End Role="hstObservationDetails" Type="Self.hstObservationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="hstObservationDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listOrgans_listObservPlanDetails">
+          <End Role="listOrgans" Type="Self.listOrgans" Multiplicity="0..1" />
+          <End Role="listObservPlanDetails" Type="Self.listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Observation_Details">
           <End Role="hstObservations" Type="Self.hstObservations" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -136,12 +171,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spAddObservData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PatientID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="HistoryItem" Type="int" Mode="In" />
+          <Parameter Name="Item" Type="int" Mode="InOut" />
+          <Parameter Name="ObservDataTypeName" Type="varchar" Mode="In" />
+          <Parameter Name="PointName" Type="varchar" Mode="In" />
+          <Parameter Name="ReportGroupCode" Type="int" Mode="In" />
+          <Parameter Name="OrganCode" Type="int" Mode="In" />
+          <Parameter Name="Report" Type="bit" Mode="In" />
+          <Parameter Name="Rating" Type="int" Mode="In" />
+          <Parameter Name="DataType" Type="varchar" Mode="In" />
+          <Parameter Name="DataLocation" Type="varchar" Mode="In" />
+          <Parameter Name="Notes" Type="text" Mode="In" />
+          <Parameter Name="Data" Type="image" Mode="In" />
+        </Function>
         <EntityContainer Name="Хранилище dbIcmModelContainer">
           <EntitySet Name="hstObservationDetailData" EntityType="Self.hstObservationDetailData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="hstObservationDetails" EntityType="Self.hstObservationDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="hstObservations" EntityType="Self.hstObservations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="listObservPlanDetails" EntityType="Self.listObservPlanDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="listObservPlans" EntityType="Self.listObservPlans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="listOrgans" EntityType="Self.listOrgans" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_hstObservationDetails_hstObservationDetailData" Association="Self.FK_hstObservationDetails_hstObservationDetailData">
             <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
             <End Role="hstObservationDetailData" EntitySet="hstObservationDetailData" />
@@ -150,13 +201,20 @@
             <End Role="listObservPlans" EntitySet="listObservPlans" />
             <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_listOrgans_hstObservationDetails" Association="Self.FK_listOrgans_hstObservationDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listOrgans_listObservPlanDetails" Association="Self.FK_listOrgans_listObservPlanDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Observation_Details" Association="Self.FK_Observation_Details">
             <End Role="hstObservations" EntitySet="hstObservations" />
             <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbIcmModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -208,6 +266,7 @@
           <Property Name="WorkstationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="hstObservationDetailData" Relationship="Self.FK_hstObservationDetails_hstObservationDetailData" FromRole="hstObservationDetails" ToRole="hstObservationDetailData" />
           <NavigationProperty Name="hstObservations" Relationship="Self.FK_Observation_Details" FromRole="hstObservationDetails" ToRole="hstObservations" />
+          <NavigationProperty Name="listOrgans" Relationship="dbIcmModel.FK_listOrgans_hstObservationDetails" FromRole="hstObservationDetails" ToRole="listOrgans" />
         </EntityType>
         <EntityType Name="hstObservations">
           <Key>
@@ -238,6 +297,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="listObservPlans" Relationship="Self.FK_listObservPlans_listObservPlanDetails" FromRole="listObservPlanDetails" ToRole="listObservPlans" />
+          <NavigationProperty Name="listOrgans" Relationship="dbIcmModel.FK_listOrgans_listObservPlanDetails" FromRole="listObservPlanDetails" ToRole="listOrgans" />
         </EntityType>
         <EntityType Name="listObservPlans">
           <Key>
@@ -315,7 +375,68 @@
             <End Role="listObservPlans" EntitySet="listObservPlans" />
             <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
           </AssociationSet>
+          <FunctionImport Name="spAddObservData">
+            <Parameter Name="PatientID" Mode="In" Type="Guid" />
+            <Parameter Name="HistoryItem" Mode="In" Type="Int32" />
+            <Parameter Name="Item" Mode="InOut" Type="Int32" />
+            <Parameter Name="ObservDataTypeName" Mode="In" Type="String" />
+            <Parameter Name="PointName" Mode="In" Type="String" />
+            <Parameter Name="ReportGroupCode" Mode="In" Type="Int32" />
+            <Parameter Name="OrganCode" Mode="In" Type="Int32" />
+            <Parameter Name="Report" Mode="In" Type="Boolean" />
+            <Parameter Name="Rating" Mode="In" Type="Int32" />
+            <Parameter Name="DataType" Mode="In" Type="String" />
+            <Parameter Name="DataLocation" Mode="In" Type="String" />
+            <Parameter Name="Notes" Mode="In" Type="String" />
+            <Parameter Name="Data" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <EntitySet Name="listOrgans" EntityType="dbIcmModel.listOrgans" />
+          <AssociationSet Name="FK_listOrgans_hstObservationDetails" Association="dbIcmModel.FK_listOrgans_hstObservationDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="hstObservationDetails" EntitySet="hstObservationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_listOrgans_listObservPlanDetails" Association="dbIcmModel.FK_listOrgans_listObservPlanDetails">
+            <End Role="listOrgans" EntitySet="listOrgans" />
+            <End Role="listObservPlanDetails" EntitySet="listObservPlanDetails" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="listOrgans">
+          <Key>
+            <PropertyRef Name="OrganCode" />
+          </Key>
+          <Property Name="OrganCode" Type="Int32" Nullable="false" />
+          <Property Name="Parent" Type="Int32" />
+          <Property Name="OrganName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Sex" Type="Int32" />
+          <NavigationProperty Name="hstObservationDetails" Relationship="dbIcmModel.FK_listOrgans_hstObservationDetails" FromRole="listOrgans" ToRole="hstObservationDetails" />
+          <NavigationProperty Name="listObservPlanDetails" Relationship="dbIcmModel.FK_listOrgans_listObservPlanDetails" FromRole="listOrgans" ToRole="listObservPlanDetails" />
+        </EntityType>
+        <Association Name="FK_listOrgans_hstObservationDetails">
+          <End Type="dbIcmModel.listOrgans" Role="listOrgans" Multiplicity="0..1" />
+          <End Type="dbIcmModel.hstObservationDetails" Role="hstObservationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="hstObservationDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_listOrgans_listObservPlanDetails">
+          <End Type="dbIcmModel.listOrgans" Role="listOrgans" Multiplicity="0..1" />
+          <End Type="dbIcmModel.listObservPlanDetails" Role="listObservPlanDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="listOrgans">
+              <PropertyRef Name="OrganCode" />
+            </Principal>
+            <Dependent Role="listObservPlanDetails">
+              <PropertyRef Name="OrganCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -400,6 +521,19 @@
                 <ScalarProperty Name="ObservTypeCode" ColumnName="ObservTypeCode" />
                 <ScalarProperty Name="PlanName" ColumnName="PlanName" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spAddObservData" FunctionName="Хранилище dbIcmModel.spAddObservData" />
+          <EntitySetMapping Name="listOrgans">
+            <EntityTypeMapping TypeName="dbIcmModel.listOrgans">
+              <MappingFragment StoreEntitySet="listOrgans">
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="OrganName" ColumnName="OrganName" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="OrganCode" ColumnName="OrganCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

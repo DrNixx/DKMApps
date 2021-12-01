@@ -22,5 +22,6 @@ namespace DKMObserver
         public string Notes { get; set; }
     
         public virtual listObservPlans listObservPlans { get; set; }
+        public virtual listOrgans listOrgans { get; set; }
     }
 }

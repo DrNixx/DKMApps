@@ -95,5 +95,10 @@ namespace LCardLib
             MaxValue = x - 1;
             MinValue = -x;
         }
+
+        public static bool IsScanFreqValid(int freq)
+        {
+            return (freq > 1) && (freq <= 400);
+        }
     }
 }

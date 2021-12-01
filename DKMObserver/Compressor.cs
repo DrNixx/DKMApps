@@ -21,8 +21,8 @@ namespace DKMObserver
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) +  @"\compress.exe";
             startInfo.Arguments = fnameIn + " " + fnameOut;
-            Process.Start(startInfo);
-
+            var p = Process.Start(startInfo);
+            p.WaitForExit(1000);
             var result = GetFileBytes(fnameOut);
 
             File.Delete(fnameOut);

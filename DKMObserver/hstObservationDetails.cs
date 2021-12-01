@@ -44,5 +44,6 @@ namespace DKMObserver
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<hstObservationDetailData> hstObservationDetailData { get; set; }
         public virtual hstObservations hstObservations { get; set; }
+        public virtual listOrgans listOrgans { get; set; }
     }
 }

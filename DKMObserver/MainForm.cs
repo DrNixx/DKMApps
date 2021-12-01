@@ -74,8 +74,12 @@ namespace DKMObserver
                     var row = drv.Row as DKMObserver.dbIcmDataSet.vwHistory_ObservationRow;
 ;
                     Console.WriteLine(row.PatientID);
+                    //var item = row.HistoryItem;
+                    //var 
 
                     var op = new ObservePanel();
+                    op.patientId = row.PatientID;
+                    op.historyItem = row.HistoryItem;
                     op.ShowDialog();
                 }
             }

@@ -13,6 +13,9 @@
         <AssociationConnector Association="dbIcmModel.FK_hstObservationDetails_hstObservationDetailData" ManuallyRouted="false" />
         <AssociationConnector Association="dbIcmModel.FK_Observation_Details" ManuallyRouted="false" />
         <AssociationConnector Association="dbIcmModel.FK_listObservPlans_listObservPlanDetails" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbIcmModel.listOrgans" Width="1.5" PointX="9" PointY="3.75" />
+        <AssociationConnector Association="dbIcmModel.FK_listOrgans_hstObservationDetails" />
+        <AssociationConnector Association="dbIcmModel.FK_listOrgans_listObservPlanDetails" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

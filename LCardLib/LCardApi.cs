@@ -105,6 +105,8 @@ namespace LCardLib
 
         private static uint lastError;
 
+        public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
+
         private static IntPtr hIfc = IntPtr.Zero;
 
         private static readonly Destructor Finalise = new Destructor();
@@ -128,7 +130,15 @@ namespace LCardLib
 
         public static IntPtr OpenLDevice()
         {
-            return WLCompStub.OpenLDevice(ref hIfc);
+            try
+            {
+                return WLCompStub.OpenLDevice(ref hIfc);
+            } 
+            catch (AccessViolationException)
+            {
+                return INVALID_HANDLE_VALUE;
+            }
+            
         }
 
         public static bool CloseLDevice()

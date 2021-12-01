@@ -12,6 +12,8 @@ namespace DKMObserver
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class dbIcmEntities : DbContext
     {
@@ -30,5 +32,59 @@ namespace DKMObserver
         public virtual DbSet<hstObservations> hstObservations { get; set; }
         public virtual DbSet<listObservPlanDetails> listObservPlanDetails { get; set; }
         public virtual DbSet<listObservPlans> listObservPlans { get; set; }
+        public virtual DbSet<listOrgans> listOrgans { get; set; }
+    
+        public virtual int spAddObservData(Nullable<System.Guid> patientID, Nullable<int> historyItem, ObjectParameter item, string observDataTypeName, string pointName, Nullable<int> reportGroupCode, Nullable<int> organCode, Nullable<bool> report, Nullable<int> rating, string dataType, string dataLocation, string notes, byte[] data)
+        {
+            var patientIDParameter = patientID.HasValue ?
+                new ObjectParameter("PatientID", patientID) :
+                new ObjectParameter("PatientID", typeof(System.Guid));
+    
+            var historyItemParameter = historyItem.HasValue ?
+                new ObjectParameter("HistoryItem", historyItem) :
+                new ObjectParameter("HistoryItem", typeof(int));
+    
+            var observDataTypeNameParameter = observDataTypeName != null ?
+                new ObjectParameter("ObservDataTypeName", observDataTypeName) :
+                new ObjectParameter("ObservDataTypeName", typeof(string));
+    
+            var pointNameParameter = pointName != null ?
+                new ObjectParameter("PointName", pointName) :
+                new ObjectParameter("PointName", typeof(string));
+    
+            var reportGroupCodeParameter = reportGroupCode.HasValue ?
+                new ObjectParameter("ReportGroupCode", reportGroupCode) :
+                new ObjectParameter("ReportGroupCode", typeof(int));
+    
+            var organCodeParameter = organCode.HasValue ?
+                new ObjectParameter("OrganCode", organCode) :
+                new ObjectParameter("OrganCode", typeof(int));
+    
+            var reportParameter = report.HasValue ?
+                new ObjectParameter("Report", report) :
+                new ObjectParameter("Report", typeof(bool));
+    
+            var ratingParameter = rating.HasValue ?
+                new ObjectParameter("Rating", rating) :
+                new ObjectParameter("Rating", typeof(int));
+    
+            var dataTypeParameter = dataType != null ?
+                new ObjectParameter("DataType", dataType) :
+                new ObjectParameter("DataType", typeof(string));
+    
+            var dataLocationParameter = dataLocation != null ?
+                new ObjectParameter("DataLocation", dataLocation) :
+                new ObjectParameter("DataLocation", typeof(string));
+    
+            var notesParameter = notes != null ?
+                new ObjectParameter("Notes", notes) :
+                new ObjectParameter("Notes", typeof(string));
+    
+            var dataParameter = data != null ?
+                new ObjectParameter("Data", data) :
+                new ObjectParameter("Data", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAddObservData", patientIDParameter, historyItemParameter, item, observDataTypeNameParameter, pointNameParameter, reportGroupCodeParameter, organCodeParameter, reportParameter, ratingParameter, dataTypeParameter, dataLocationParameter, notesParameter, dataParameter);
+        }
     }
 }

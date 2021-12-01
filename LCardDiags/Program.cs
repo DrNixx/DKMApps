@@ -1,6 +1,7 @@
 ﻿using LCardLib;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace LCardDiags
 {
@@ -8,13 +9,16 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
-            using (var db = new dbIcmEntities())
-            {
-                var list = db.listObservPlanDetails.ToList();
-            }
+            var card = new CardImitator();
+            var reader = new DataReader(card, ResultCallback);
 
+            Thread t = new Thread(new ThreadStart(reader.DoReadSample));
+            t.Start();
+            Console.WriteLine("Main thread does some work, then waits.");
+            t.Join();
+            Console.WriteLine("Independent task has completed; main thread ends.");
 
-            var card = new L761Card();
+            /*
             card.InitCard(160);
             var start = card.StartRead();
             if (start)
@@ -27,6 +31,7 @@ namespace LCardDiags
 
                 card.StopRead();
             }
+            */
 
             card.StopCard();
             card.Dispose();
@@ -122,6 +127,12 @@ namespace LCardDiags
             */
             Console.WriteLine("Press any key");
             Console.ReadKey();
+        }
+
+        public static void ResultCallback(int count)
+        {
+            Console.WriteLine(
+                "Independent task printed {0} lines.", count);
         }
     }
 }
