@@ -9,6 +9,7 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
+            /*
             var card = new CardImitator();
             var reader = new DataReader(card, ResultCallback);
 
@@ -18,23 +19,9 @@ namespace LCardDiags
             t.Join();
             Console.WriteLine("Independent task has completed; main thread ends.");
 
-            /*
-            card.InitCard(160);
-            var start = card.StartRead();
-            if (start)
-            {
-                for (var i = 0; i < 10; i++)
-                {
-                    var d = card.ReadValue();
-                    Console.WriteLine(d);
-                }
-
-                card.StopRead();
-            }
-            */
-
             card.StopCard();
             card.Dispose();
+            */
 
             /*
             LCardApi.OpenSlot(0);

@@ -15136,7 +15136,7 @@ SELECT PatientID, HistoryItem, Parent, SortOrder, Name, ElementName, HistoryType
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT        vwHistory_Observation.HistoryItem, vwHistory_Observation.SortOrder, vwHistory_Observation.Name, vwHistory_Observation.BegTime, vwHistory_Observation.EndTime, vwHistory_Observation.PatientID, Patients.FName, 
@@ -15144,6 +15144,15 @@ SELECT PatientID, HistoryItem, Parent, SortOrder, Name, ElementName, HistoryType
 FROM            vwHistory_Observation INNER JOIN
                          Patients ON vwHistory_Observation.PatientID = Patients.PatientID";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = @"SELECT        TOP (1000) vwHistory_Observation.HistoryItem, vwHistory_Observation.SortOrder, vwHistory_Observation.Name, vwHistory_Observation.BegTime, vwHistory_Observation.EndTime, vwHistory_Observation.PatientID, 
+                         Patients.FName, Patients.IName, Patients.OName, Patients.Birthday, Patients.Sex, vwHistory_Observation.ElementName
+FROM            vwHistory_Observation INNER JOIN
+                         Patients ON vwHistory_Observation.PatientID = Patients.PatientID
+WHERE        (vwHistory_Observation.ObservTypeCode = 1)
+ORDER BY vwHistory_Observation.BegTime DESC, vwHistory_Observation.HistoryItem DESC, vwHistory_Observation.SortOrder DESC";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -15168,6 +15177,19 @@ FROM            vwHistory_Observation INNER JOIN
             dbIcmDataSet.vwHistory_ObservationDataTable dataTable = new dbIcmDataSet.vwHistory_ObservationDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillBy100(dbIcmDataSet.vwHistory_ObservationDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
         }
     }
     

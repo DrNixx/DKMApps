@@ -34,7 +34,7 @@ namespace DKMObserver
         public virtual DbSet<listObservPlans> listObservPlans { get; set; }
         public virtual DbSet<listOrgans> listOrgans { get; set; }
     
-        public virtual int spAddObservData(Nullable<System.Guid> patientID, Nullable<int> historyItem, ObjectParameter item, string observDataTypeName, string pointName, Nullable<int> reportGroupCode, Nullable<int> organCode, Nullable<bool> report, Nullable<int> rating, string dataType, string dataLocation, string notes, byte[] data)
+        public virtual int spAddObservData(Nullable<System.Guid> patientID, Nullable<int> historyItem, ObjectParameter item, string observDataTypeName, string pointName, Nullable<int> reportGroupCode, Nullable<int> organCode, Nullable<bool> report, Nullable<int> rating, string dataType, string dataLocation, string notes, byte[] data, byte[] thumbnail)
         {
             var patientIDParameter = patientID.HasValue ?
                 new ObjectParameter("PatientID", patientID) :
@@ -84,7 +84,11 @@ namespace DKMObserver
                 new ObjectParameter("Data", data) :
                 new ObjectParameter("Data", typeof(byte[]));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAddObservData", patientIDParameter, historyItemParameter, item, observDataTypeNameParameter, pointNameParameter, reportGroupCodeParameter, organCodeParameter, reportParameter, ratingParameter, dataTypeParameter, dataLocationParameter, notesParameter, dataParameter);
+            var thumbnailParameter = thumbnail != null ?
+                new ObjectParameter("Thumbnail", thumbnail) :
+                new ObjectParameter("Thumbnail", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAddObservData", patientIDParameter, historyItemParameter, item, observDataTypeNameParameter, pointNameParameter, reportGroupCodeParameter, organCodeParameter, reportParameter, ratingParameter, dataTypeParameter, dataLocationParameter, notesParameter, dataParameter, thumbnailParameter);
         }
     }
 }

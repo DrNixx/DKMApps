@@ -26,7 +26,7 @@ namespace DKMObserver.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=dbIcm;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DKM10;Initial Catalog=dbIcm;Integrated Security=True")]
         public string dbIcmConnectionString {
             get {
                 return ((string)(this["dbIcmConnectionString"]));

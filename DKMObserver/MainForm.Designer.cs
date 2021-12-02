@@ -36,16 +36,16 @@ namespace DKMObserver
             this.IName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Birthday = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SortOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.begTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SortOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historyItemDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.patientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vwHistoryObservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dbIcmDataSet = new DKMObserver.dbIcmDataSet();
             this.vwHistory_ObservationTableAdapter = new DKMObserver.dbIcmDataSetTableAdapters.vwHistory_ObservationTableAdapter();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvObserves)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vwHistoryObservationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).BeginInit();
@@ -54,7 +54,7 @@ namespace DKMObserver
             // btnOpenObserver
             // 
             this.btnOpenObserver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenObserver.Location = new System.Drawing.Point(616, 457);
+            this.btnOpenObserver.Location = new System.Drawing.Point(624, 465);
             this.btnOpenObserver.Name = "btnOpenObserver";
             this.btnOpenObserver.Size = new System.Drawing.Size(172, 23);
             this.btnOpenObserver.TabIndex = 0;
@@ -87,7 +87,7 @@ namespace DKMObserver
             this.dgvObserves.Location = new System.Drawing.Point(12, 12);
             this.dgvObserves.Name = "dgvObserves";
             this.dgvObserves.ReadOnly = true;
-            this.dgvObserves.Size = new System.Drawing.Size(776, 439);
+            this.dgvObserves.Size = new System.Drawing.Size(784, 447);
             this.dgvObserves.TabIndex = 1;
             // 
             // FName
@@ -118,6 +118,25 @@ namespace DKMObserver
             this.Birthday.Name = "Birthday";
             this.Birthday.ReadOnly = true;
             // 
+            // SortOrder
+            // 
+            this.SortOrder.DataPropertyName = "SortOrder";
+            this.SortOrder.HeaderText = "SortOrder";
+            this.SortOrder.Name = "SortOrder";
+            this.SortOrder.ReadOnly = true;
+            this.SortOrder.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(106, 465);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
@@ -138,14 +157,6 @@ namespace DKMObserver
             this.endTimeDataGridViewTextBoxColumn.HeaderText = "Окончание";
             this.endTimeDataGridViewTextBoxColumn.Name = "endTimeDataGridViewTextBoxColumn";
             this.endTimeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // SortOrder
-            // 
-            this.SortOrder.DataPropertyName = "SortOrder";
-            this.SortOrder.HeaderText = "SortOrder";
-            this.SortOrder.Name = "SortOrder";
-            this.SortOrder.ReadOnly = true;
-            this.SortOrder.Visible = false;
             // 
             // historyItemDataGridViewTextBoxColumn
             // 
@@ -169,8 +180,8 @@ namespace DKMObserver
             this.vwHistoryObservationBindingSource.AllowNew = false;
             this.vwHistoryObservationBindingSource.DataMember = "vwHistory_Observation";
             this.vwHistoryObservationBindingSource.DataSource = this.dbIcmDataSet;
-            this.vwHistoryObservationBindingSource.Filter = "ElementName = \'DKMObservation\'";
-            this.vwHistoryObservationBindingSource.Sort = "HistoryItem desc, SortOrder desc";
+            this.vwHistoryObservationBindingSource.Filter = "";
+            this.vwHistoryObservationBindingSource.Sort = "";
             // 
             // dbIcmDataSet
             // 
@@ -181,22 +192,11 @@ namespace DKMObserver
             // 
             this.vwHistory_ObservationTableAdapter.ClearBeforeFill = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(106, 457);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 492);
+            this.ClientSize = new System.Drawing.Size(808, 500);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dgvObserves);
             this.Controls.Add(this.btnOpenObserver);

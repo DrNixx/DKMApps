@@ -67,7 +67,7 @@ namespace DKMObserver
         private void MainForm_Load(object sender, EventArgs e)
         {
             // TODO: данная строка кода позволяет загрузить данные в таблицу "dbIcmDataSet.vwHistory_Observation". При необходимости она может быть перемещена или удалена.
-            this.vwHistory_ObservationTableAdapter.Fill(this.dbIcmDataSet.vwHistory_Observation);
+            this.vwHistory_ObservationTableAdapter.FillBy100(this.dbIcmDataSet.vwHistory_Observation);
 
         }
 
@@ -91,6 +91,19 @@ namespace DKMObserver
                 }
             }
             
+        }
+
+        private void fillBy100ToolStripButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.vwHistory_ObservationTableAdapter.FillBy100(this.dbIcmDataSet.vwHistory_Observation);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }

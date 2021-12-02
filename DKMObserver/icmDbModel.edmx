@@ -185,6 +185,7 @@
           <Parameter Name="DataLocation" Type="varchar" Mode="In" />
           <Parameter Name="Notes" Type="text" Mode="In" />
           <Parameter Name="Data" Type="image" Mode="In" />
+          <Parameter Name="Thumbnail" Type="image" Mode="In" />
         </Function>
         <EntityContainer Name="Хранилище dbIcmModelContainer">
           <EntitySet Name="hstObservationDetailData" EntityType="Self.hstObservationDetailData" Schema="dbo" store:Type="Tables" />
@@ -389,6 +390,7 @@
             <Parameter Name="DataLocation" Mode="In" Type="String" />
             <Parameter Name="Notes" Mode="In" Type="String" />
             <Parameter Name="Data" Mode="In" Type="Binary" />
+            <Parameter Name="Thumbnail" Mode="In" Type="Binary" />
           </FunctionImport>
           <EntitySet Name="listOrgans" EntityType="dbIcmModel.listOrgans" />
           <AssociationSet Name="FK_listOrgans_hstObservationDetails" Association="dbIcmModel.FK_listOrgans_hstObservationDetails">
