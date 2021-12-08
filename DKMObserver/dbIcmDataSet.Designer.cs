@@ -15146,7 +15146,7 @@ FROM            vwHistory_Observation INNER JOIN
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = @"SELECT        TOP (1000) vwHistory_Observation.HistoryItem, vwHistory_Observation.SortOrder, vwHistory_Observation.Name, vwHistory_Observation.BegTime, vwHistory_Observation.EndTime, vwHistory_Observation.PatientID, 
+            this._commandCollection[1].CommandText = @"SELECT        TOP (100) vwHistory_Observation.HistoryItem, vwHistory_Observation.SortOrder, vwHistory_Observation.Name, vwHistory_Observation.BegTime, vwHistory_Observation.EndTime, vwHistory_Observation.PatientID, 
                          Patients.FName, Patients.IName, Patients.OName, Patients.Birthday, Patients.Sex, vwHistory_Observation.ElementName
 FROM            vwHistory_Observation INNER JOIN
                          Patients ON vwHistory_Observation.PatientID = Patients.PatientID

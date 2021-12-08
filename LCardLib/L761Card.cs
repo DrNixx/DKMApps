@@ -14,9 +14,11 @@ namespace LCardLib
 
     public class L761Card : ADCCard
     {
+        private const int elementSize = 2;
+
         const uint DefPointsToInt = 100;
         const int DefL761Slot = 0;
-        const int DefL761Channel = 1;
+        const int DefL761Channel = 0;
         const L761Amplification DefL761Amplification = L761Amplification.x1;
 
         private WADC_PAR_0 FADC_Par;
@@ -26,6 +28,7 @@ namespace LCardLib
         private IntPtr FPSync;
         private IntPtr FPData;
         private uint FPackSize; // сколько отсчетов необходимо осреднять
+        
         public uint Slot { get; private set; }
         public uint Channel { get; private set; }
         public L761Amplification Amplification { get; private set; }
@@ -115,23 +118,29 @@ namespace LCardLib
             var SumValue = 0;
             if (endSync < begSync) {
                 // буфер завернулся, собираем из 2х половинок
-                short[] dataArray1 = new short[FBufferSize - begSync];
-                Marshal.Copy(this.FPData, dataArray1, (int)begSync, dataArray1.Length);
+                for (var i = begSync; i < FBufferSize; i++)
+                {
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize));
+                }
 
-                short[] dataArray2 = new short[endSync + 1];
-                Marshal.Copy(this.FPData, dataArray1, 0, (int)(endSync + 1));
-
-                SumValue = dataArray1.Sum(x => x) + dataArray2.Sum(x => x);
+                for (var i = 0; i <= endSync; i++)
+                {
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize));
+                }
             } else {
-                short[] dataArray = new short[endSync - begSync + 1];
-                Marshal.Copy(this.FPData, dataArray, 0, dataArray.Length);
-                SumValue = dataArray.Sum(x => x);
+                for (var i = begSync; i <= endSync; i++)
+                {
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize)); ;
+                }
             }
-         
+
             // осреднить
+            
             if (this.FPackSize > 0) {
                 Result = (int)(SumValue / FPackSize);
             }
+
+            Console.WriteLine(Result);
 
             return Result;
         }
@@ -145,16 +154,37 @@ namespace LCardLib
 
             this.IsReading = false;
 
+            var maxPackSize = DefPointsToInt * 20 / 10;
+            var minPackSize = DefPointsToInt * 3 / 10;
+            var minDelta = 1D;
+            var bestPackSize = minPackSize;
+
+            // вычислить FPackSize - подбираем так,
+            // чтобы частота опроса была как можно ближе к требуемой
+            for (uint i = minPackSize; i <= maxPackSize; i++)
+            {
+                var delta = Math.Abs((1000000 / (Freq * i)) - Math.Ceiling(1000000 / (Freq * i)));
+                if (delta < minDelta)
+                {
+                    minDelta = delta;
+                    bestPackSize = i;
+                }
+            }
+
+            this.FPackSize = bestPackSize;
+
             this.FADC_Par = new WADC_PAR_0
             {
                 s_Type = LCardApi.L_ADC_PARAM,
                 AutoInit = 1,
+                dRate = (Freq * FPackSize) / 1000, // в кГц
+                dKadr = 0,
                 dScale = 0,
                 SynchroType = 3, // - тип синхронизации 3 - синхронизации нет
-                SynchroSensitivity = 1, // - вид синхронизации
-                SynchroMode = 1, // - режим синхронизации
-                AdChannel = 0, // - канал синхронизации
-                AdPorog = 128, // - уровень синхронизации
+                SynchroSensitivity = 0,
+                SynchroMode = 0,
+                AdChannel = 0,
+                AdPorog = 0,
                 NCh = 1 // - количество каналов участвующее в сборе данных
             };
 
@@ -175,26 +205,6 @@ namespace LCardLib
                     break;
             }
 
-            var maxPackSize = DefPointsToInt * 20 / 10;
-            var minPackSize = DefPointsToInt * 3 / 10;
-            var minDelta = 1D;
-            var bestPackSize = minPackSize;
-
-            // вычислить FPackSize - подбираем так,
-            // чтобы частота опроса была как можно ближе к требуемой
-            for (uint i = minPackSize; i <= maxPackSize; i++) {
-                var delta = Math.Abs((1000000 / (Freq * i)) - Math.Ceiling(1000000 / (Freq * i)));
-                if (delta < minDelta)
-                {
-                    minDelta = delta;
-                    bestPackSize = i;
-                }
-            }
-
-            this.FPackSize = bestPackSize;
-            this.FADC_Par.dRate = (Freq * FPackSize) / 1000; // в кГц
-            this.FADC_Par.dKadr = 0;
-
             this.FADC_Par.FIFO = 0x400;
             this.FADC_Par.IrqStep = FPackSize;
             this.FADC_Par.Pages = 16;
@@ -207,11 +217,10 @@ namespace LCardLib
                 this.FPackSize = this.FADC_Par.IrqStep;
                 this.Freq = this.FADC_Par.dRate * 1000D / FPackSize; // настоящая частота сбора данных
                 this.FBufferSize = this.FADC_Par.IrqStep * FADC_Par.Pages * 16;
-                this.IsReading = 
-                    LCardApi.RequestBufferStream(ref this.FBufferSize, LCardApi.L_STREAM_ADC) &
-                    LCardApi.SetParametersStream(ref this.FADC_Par, LCardApi.CASE_ADC_PAR_0, ref this.FBufferSize, ref this.FPData, ref this.FPSync, LCardApi.L_STREAM_ADC) &
-                    LCardApi.InitStartLDevice() &
-                    LCardApi.StartLDevice();
+
+                this.IsReading = LCardApi.RequestBufferStream(ref this.FBufferSize, LCardApi.L_STREAM_ADC);
+                this.IsReading &= LCardApi.SetParametersStream(ref this.FADC_Par, LCardApi.CASE_ADC_PAR_0, ref this.FBufferSize, ref this.FPData, ref this.FPSync, LCardApi.L_STREAM_ADC);
+                this.IsReading &= LCardApi.InitStartLDevice() & LCardApi.StartLDevice();
 
                 if (this.IsReading)
                 {

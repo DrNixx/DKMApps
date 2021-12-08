@@ -1,7 +1,9 @@
 ﻿using LCardLib;
+using Nito.AsyncEx;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LCardDiags
 {
@@ -9,21 +11,17 @@ namespace LCardDiags
     {
         static void Main(string[] args)
         {
-            /*
-            var card = new CardImitator();
-            var reader = new DataReader(card, ResultCallback);
+            AsyncContext.Run(() => test2());
+        }
 
-            Thread t = new Thread(new ThreadStart(reader.DoReadSample));
-            t.Start();
-            Console.WriteLine("Main thread does some work, then waits.");
-            t.Join();
-            Console.WriteLine("Independent task has completed; main thread ends.");
+        public static void ResultCallback(int count)
+        {
+            Console.WriteLine(
+                "Independent task printed {0} lines.", count);
+        }
 
-            card.StopCard();
-            card.Dispose();
-            */
-
-            /*
+        private static void test1()
+        {
             LCardApi.OpenSlot(0);
 
             var h = LCardApi.OpenLDevice();
@@ -111,15 +109,26 @@ namespace LCardDiags
 
             Console.WriteLine("Press any key");
             Console.ReadKey();
-            */
+
+            for (var i = 0; i < 400; i++)
+            {
+                var val = 0;
+            }
+
             Console.WriteLine("Press any key");
             Console.ReadKey();
         }
-
-        public static void ResultCallback(int count)
+    
+        private async static void test2()
         {
-            Console.WriteLine(
-                "Independent task printed {0} lines.", count);
+            var card = new L761Card();
+
+            var reader = new DataReader(card, 160, 60);
+
+            var progress = new Progress<int>(s => Console.WriteLine(s));
+            var result = await Task.Run(() => reader.DoReadSample(null));
+
+            Console.WriteLine(reader.buffer.Count);
         }
     }
 }

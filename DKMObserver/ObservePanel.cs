@@ -74,7 +74,11 @@ namespace DKMObserver
                 makeNodes(nodeRoot, root.Item, root.OrganCode);
             }
 
-            trPlanDetail.Nodes[0].Expand();
+            if (trPlanDetail.Nodes.Count > 0)
+            {
+                trPlanDetail.Nodes[0].Expand();
+            }
+            
 
             this.ResumeLayout();
         }
@@ -123,14 +127,14 @@ namespace DKMObserver
             var result = true;
             btnStart.Enabled = false;
 
-            var wf = new WaitForm();
+            var wf = new WaitForm((int)nPause.Value);
 
             if (wf.ShowDialog() == DialogResult.OK)
             {
                 //var card = new CardImitator();
                 var card = new L761Card();
                 
-                var reader = new DataReader(card);
+                var reader = new DataReader(card, (int)nFreq.Value, (int)nDiagLen.Value);
 
                 var progress = new Progress<int>(s => chart1.Series[0].Points.AddY(s));
 
@@ -152,8 +156,14 @@ namespace DKMObserver
                 dl.AddRange(data);
                 dl.AddRange(Encoding.GetEncoding(1251).GetBytes("\r\n\t\t</Sample>\r\n\t</Samples>\r\n\t<TimeMarks/>\r\n</DKMData>"));
 
-                var lastItem = db.hstObservationDetails.Max(x => x.Item);
-
+                var lastItem = 0;
+                if (db.hstObservationDetails.Where(x => x.PatientID == this.patientId && x.HistoryItem == this.historyItem).Count() > 0)
+                {
+                    lastItem = db.hstObservationDetails
+                        .Where(x => x.PatientID == this.patientId && x.HistoryItem == this.historyItem)
+                        .Max(x => x.Item);
+                }
+                
                 var detail = new hstObservationDetails();
                 detail.PatientID = this.patientId;
                 detail.HistoryItem = this.historyItem;
@@ -197,7 +207,7 @@ namespace DKMObserver
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            var wait = new WaitForm();
+            var wait = new WaitForm((int)nPause.Value);
             if (wait.ShowDialog() != DialogResult.OK)
             {
                 MessageBox.Show(this, "Операция отменена пользователем", "Операция отменена", MessageBoxButtons.OK, MessageBoxIcon.Information);

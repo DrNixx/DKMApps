@@ -16,9 +16,10 @@ namespace DKMObserver
 
         private DateTime endTime;
 
-        public WaitForm()
+        public WaitForm(int waitTime)
         {
             InitializeComponent();
+            this.waitTime = waitTime;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

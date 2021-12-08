@@ -20,9 +20,11 @@ namespace LCardLib
 
         private ProgressCallback callback = null;
 
-        public DataReader(ADCCard card)
+        public DataReader(ADCCard card, int freq, int diagLen)
         {
             this.card = card;
+            this.freq = freq;
+            this.diagLen = diagLen;
 
         }
 
@@ -40,6 +42,11 @@ namespace LCardLib
                 var start = card.StartRead();
                 if (start)
                 {
+                    for (var i = 0; i < this.freq; i++)
+                    {
+                        card.ReadValue(false);
+                    }
+
                     buffer.Clear();
                     var simpleCountMax = diagLen * this.freq;
                     do
@@ -47,7 +54,11 @@ namespace LCardLib
                         var val = (short)card.ReadValue(false);
                         buffer.Add(val);
 
-                        progress.Report(val);
+                        if (progress != null)
+                        {
+                            progress.Report(val);
+                        }
+                        
                     } while (card.IsReading && buffer.Count < simpleCountMax);
                 }
             }

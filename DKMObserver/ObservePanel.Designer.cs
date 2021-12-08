@@ -45,11 +45,20 @@ namespace DKMObserver
             this.btnMonitor = new System.Windows.Forms.Button();
             this.listOrgansBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.listOrgansTableAdapter = new DKMObserver.dbIcmDataSetTableAdapters.listOrgansTableAdapter();
+            this.nPause = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.nFreq = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nDiagLen = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlansBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listOrgansBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPause)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nFreq)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nDiagLen)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -150,11 +159,100 @@ namespace DKMObserver
             // 
             this.listOrgansTableAdapter.ClearBeforeFill = true;
             // 
+            // nPause
+            // 
+            this.nPause.Location = new System.Drawing.Point(668, 41);
+            this.nPause.Name = "nPause";
+            this.nPause.Size = new System.Drawing.Size(120, 20);
+            this.nPause.TabIndex = 11;
+            this.nPause.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(633, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(155, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Пауза перед съемом данных";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(737, 83);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Частота";
+            // 
+            // nFreq
+            // 
+            this.nFreq.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nFreq.Location = new System.Drawing.Point(666, 99);
+            this.nFreq.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nFreq.Name = "nFreq";
+            this.nFreq.Size = new System.Drawing.Size(120, 20);
+            this.nFreq.TabIndex = 14;
+            this.nFreq.Value = new decimal(new int[] {
+            160,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(641, 142);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(147, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Длительность диагностики";
+            // 
+            // nDiagLen
+            // 
+            this.nDiagLen.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nDiagLen.Location = new System.Drawing.Point(665, 159);
+            this.nDiagLen.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nDiagLen.Name = "nDiagLen";
+            this.nDiagLen.Size = new System.Drawing.Size(120, 20);
+            this.nDiagLen.TabIndex = 16;
+            this.nDiagLen.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
             // ObservePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 640);
+            this.Controls.Add(this.nDiagLen);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.nFreq);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.nPause);
             this.Controls.Add(this.btnMonitor);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.chart1);
@@ -169,6 +267,9 @@ namespace DKMObserver
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listOrgansBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPause)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nFreq)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nDiagLen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,5 +290,11 @@ namespace DKMObserver
         private System.Windows.Forms.Button btnMonitor;
         private System.Windows.Forms.BindingSource listOrgansBindingSource;
         private dbIcmDataSetTableAdapters.listOrgansTableAdapter listOrgansTableAdapter;
+        private System.Windows.Forms.NumericUpDown nPause;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown nFreq;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown nDiagLen;
     }
 }
