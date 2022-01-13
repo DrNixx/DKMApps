@@ -45,6 +45,7 @@
     <Compile Include="BoardTypes.cs" />
     <Compile Include="CardImitator.cs" />
     <Compile Include="DataReader.cs" />
+    <Compile Include="E154Card.cs" />
     <Compile Include="IoCtl.cs" />
     <Compile Include="L761Card.cs" />
     <Compile Include="LCardApi.cs" />

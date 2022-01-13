@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace LCardLib
 {
-    public enum L761Amplification
+    public enum E154Amplification
     {
         x1, x4, x16, x64
     }
 
-    public class L761Card : ADCCard
+    public class E154Card : ADCCard
     {
         private const int elementSize = 2;
 
         const uint DefPointsToInt = 100;
-        const int DefL761Slot = 0;
-        const int DefL761Channel = 0;
-        const L761Amplification DefL761Amplification = L761Amplification.x1;
+        const int DefE154Slot = 0;
+        const int DefE154Channel = 0;
+        const E154Amplification DefE154Amplification = E154Amplification.x1;
 
         private WADC_PAR_0 FADC_Par;
         private PLATA_DESCR FPlata_Desc;
@@ -28,40 +28,38 @@ namespace LCardLib
         private IntPtr FPSync;
         private IntPtr FPData;
         private uint FPackSize; // сколько отсчетов необходимо осреднять
-        
-        public uint Slot { get; private set; }
-        public uint Channel { get; private set; }
-        public L761Amplification Amplification { get; private set; }
 
-        public L761Card() : base()
+        public uint Channel { get; private set; }
+        public E154Amplification Amplification { get; private set; }
+
+        public E154Card() : base()
         {
             NumBits = 14;
             IsPresent = false;
             CalcMaxMinValues();
 
-            Slot = DefL761Slot;
-            Channel = DefL761Channel;
-            Amplification = DefL761Amplification;
+            Channel = DefE154Channel;
+            Amplification = DefE154Amplification;
         }
 
         public override bool InitCard(int readFreq)
         {
-            if (IsPresent) {
+            if (IsPresent)
+            {
                 StopCard();
             }
 
             IsPresent = false;
             Freq = readFreq;
 
-            if (LCardApi.OpenSlot(Slot) && (LCardApi.OpenLDevice() != LCardApi.INVALID_HANDLE_VALUE))
+            if (LCardApi.OpenSlot(DefE154Slot) && (LCardApi.OpenLDevice() != LCardApi.INVALID_HANDLE_VALUE))
             {
-                this.IsPresent = 
-                    LCardApi.ReadPlataDescr(out this.FPlata_Desc) & 
-                    LCardApi.LoadBios(this.FPlata_Desc.BrdName) & 
+                this.IsPresent =
+                    LCardApi.ReadPlataDescr(out this.FPlata_Desc) &
                     LCardApi.PlataTest();
             }
 
-            
+
             fReading = false;
 
             return IsPresent;
@@ -70,73 +68,87 @@ namespace LCardLib
         public override int ReadValue(bool stopCondition = false)
         {
             var Result = 0;
-            if (!this.IsReading) {
+            if (!this.IsReading)
+            {
                 return 0;
             }
-            
+
             // ждем окончания чтения
             var begSync = this.PrevSyncValue;
             var endSync = begSync + this.FPackSize - 1;
-            if (endSync >= this.FBufferSize) {
+            if (endSync >= this.FBufferSize)
+            {
                 endSync = endSync - this.FBufferSize;
             }
 
-            //  raise EADCCardException.CreateFmt('begSync %p endSync %p FBufferSize %x FPSync^ %x)!', [pointer(begSync), pointer(endSync), FBufferSize, FPSync^]);
+            // raise EADCCardException.CreateFmt('begSync %p endSync %p FBufferSize %x FPSync^ %x)!', [pointer(begSync), pointer(endSync), FBufferSize, FPSync^]);
             bool stop = false;
             long delta = 0;
 
             var Ticks = Environment.TickCount;
-            do {
+            do
+            {
                 System.Threading.Thread.Sleep(0);
                 stop = stopCondition || (!this.IsReading);
                 delta = (Marshal.ReadInt32(this.FPSync) - begSync);
-                if (delta < 0) {
+                if (delta < 0)
+                {
                     delta = delta + (int)this.FBufferSize;
                 }
 
                 var deltaTicks = Environment.TickCount;
-                if (deltaTicks != Ticks) {
+                if (deltaTicks != Ticks)
+                {
                     // по типу учитываем переполнение
-                    if (deltaTicks > Ticks) {
+                    if (deltaTicks > Ticks)
+                    {
                         deltaTicks = deltaTicks - Ticks;
-                    } else {
+                    }
+                    else
+                    {
                         deltaTicks = Int32.MaxValue - Ticks + deltaTicks;
                     }
 
-                    if (deltaTicks > 2000) { // если крутимся больше 2х секунд
+                    if (deltaTicks > 3000)
+                    { // если крутимся больше 2х секунд
                         throw new Exception(string.Format("Ошибка чтения (Прочитано {0}, буфер {1})!", delta, this.FBufferSize));
                     }
                 }
             } while (stop || (delta > this.FPackSize));
-        
-            if (stop) {
+
+            if (stop)
+            {
                 return 0;
             }
-        
+
             // отмечаем начало и конец буфера с данными
             this.PrevSyncValue = endSync + 1;
             var SumValue = 0;
-            if (endSync < begSync) {
+            if (endSync < begSync)
+            {
                 // буфер завернулся, собираем из 2х половинок
                 for (var i = begSync; i < FBufferSize; i++)
                 {
-                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize));
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * E154Card.elementSize));
                 }
 
                 for (var i = 0; i <= endSync; i++)
                 {
-                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize));
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * E154Card.elementSize));
                 }
-            } else {
+            }
+            else
+            {
                 for (var i = begSync; i <= endSync; i++)
                 {
-                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * L761Card.elementSize)); ;
+                    SumValue += Marshal.ReadInt16(this.FPData, (int)(i * E154Card.elementSize)); ;
                 }
             }
 
             // осреднить
-            
-            if (this.FPackSize > 0) {
+
+            if (this.FPackSize > 0)
+            {
                 Result = (int)(SumValue / FPackSize);
             }
 
@@ -148,7 +160,8 @@ namespace LCardLib
         public override bool StartRead()
         {
             this.PrevSyncValue = 0;
-            if ((!this.IsPresent) || this.IsReading) {
+            if ((!this.IsPresent) || this.IsReading)
+            {
                 return false;
             }
 
@@ -171,7 +184,7 @@ namespace LCardLib
                 }
             }
 
-            this.FPackSize = bestPackSize;
+            this.FPackSize = 64; // bestPackSize;
 
             this.FADC_Par = new WADC_PAR_0
             {
@@ -180,7 +193,7 @@ namespace LCardLib
                 dRate = (Freq * FPackSize) / 1000, // в кГц
                 dKadr = 0,
                 dScale = 0,
-                SynchroType = 3, // - тип синхронизации 3 - синхронизации нет
+                SynchroType = 0, // - тип синхронизации 0 - синхронизации нет
                 SynchroSensitivity = 0,
                 SynchroMode = 0,
                 AdChannel = 0,
@@ -190,22 +203,23 @@ namespace LCardLib
 
             this.FADC_Par.Chn = new uint[128];
             this.FADC_Par.Chn[0] = this.Channel & 0x07;
-            switch (this.Amplification) {
-                case L761Amplification.x1:
+            switch (this.Amplification)
+            {
+                case E154Amplification.x1:
                     this.FADC_Par.Chn[0] = this.FADC_Par.Chn[0] + 0x00;
                     break;
-                case L761Amplification.x4:
+                case E154Amplification.x4:
                     this.FADC_Par.Chn[0] = this.FADC_Par.Chn[0] + 0x40;
                     break;
-                case L761Amplification.x16:
+                case E154Amplification.x16:
                     this.FADC_Par.Chn[0] = this.FADC_Par.Chn[0] + 0x80;
                     break;
-                case L761Amplification.x64:
+                case E154Amplification.x64:
                     this.FADC_Par.Chn[0] = this.FADC_Par.Chn[0] + 0xC0;
                     break;
             }
 
-            this.FADC_Par.FIFO = 0x400;
+            this.FADC_Par.FIFO = 0x1000;
             this.FADC_Par.IrqStep = FPackSize;
             this.FADC_Par.Pages = 16;
             this.FADC_Par.IrqEna = 1;
@@ -236,7 +250,8 @@ namespace LCardLib
 
         public override void StopCard()
         {
-            if (this.IsPresent) { 
+            if (this.IsPresent)
+            {
                 if (this.IsReading)
                 {
                     this.StopRead();
@@ -258,12 +273,12 @@ namespace LCardLib
 
         protected override string GetCardDescription()
         {
-            return "LCard L761";
+            return "LCard E154";
         }
 
         protected override string GetCardName()
         {
-            return "L761";
+            return "E154";
         }
     }
 }

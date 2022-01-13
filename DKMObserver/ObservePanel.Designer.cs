@@ -30,8 +30,8 @@ namespace DKMObserver
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.cbObservPlans = new System.Windows.Forms.ComboBox();
             this.listObservPlansBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -51,6 +51,8 @@ namespace DKMObserver
             this.nFreq = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.nDiagLen = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbCards = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlansBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).BeginInit();
@@ -115,14 +117,14 @@ namespace DKMObserver
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Location = new System.Drawing.Point(11, 509);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(777, 124);
             this.chart1.TabIndex = 8;
             this.chart1.Text = "chart1";
@@ -161,7 +163,7 @@ namespace DKMObserver
             // 
             // nPause
             // 
-            this.nPause.Location = new System.Drawing.Point(668, 41);
+            this.nPause.Location = new System.Drawing.Point(670, 106);
             this.nPause.Name = "nPause";
             this.nPause.Size = new System.Drawing.Size(120, 20);
             this.nPause.TabIndex = 11;
@@ -174,7 +176,7 @@ namespace DKMObserver
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(633, 25);
+            this.label2.Location = new System.Drawing.Point(635, 90);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(155, 13);
             this.label2.TabIndex = 12;
@@ -183,7 +185,7 @@ namespace DKMObserver
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(737, 83);
+            this.label3.Location = new System.Drawing.Point(739, 148);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 13;
@@ -196,7 +198,7 @@ namespace DKMObserver
             0,
             0,
             0});
-            this.nFreq.Location = new System.Drawing.Point(666, 99);
+            this.nFreq.Location = new System.Drawing.Point(668, 164);
             this.nFreq.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -214,7 +216,7 @@ namespace DKMObserver
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(641, 142);
+            this.label4.Location = new System.Drawing.Point(643, 207);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(147, 13);
             this.label4.TabIndex = 15;
@@ -227,7 +229,7 @@ namespace DKMObserver
             0,
             0,
             0});
-            this.nDiagLen.Location = new System.Drawing.Point(665, 159);
+            this.nDiagLen.Location = new System.Drawing.Point(667, 224);
             this.nDiagLen.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -242,11 +244,30 @@ namespace DKMObserver
             0,
             0});
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(750, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(37, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Карта";
+            // 
+            // cbCards
+            // 
+            this.cbCards.FormattingEnabled = true;
+            this.cbCards.Location = new System.Drawing.Point(638, 25);
+            this.cbCards.Name = "cbCards";
+            this.cbCards.Size = new System.Drawing.Size(151, 21);
+            this.cbCards.TabIndex = 18;
+            // 
             // ObservePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 640);
+            this.Controls.Add(this.cbCards);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.nDiagLen);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.nFreq);
@@ -296,5 +317,7 @@ namespace DKMObserver
         private System.Windows.Forms.NumericUpDown nFreq;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown nDiagLen;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbCards;
     }
 }

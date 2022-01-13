@@ -41,7 +41,32 @@ namespace DKMObserver
         {
             this.listOrgansTableAdapter.Fill(this.dbIcmDataSet.listOrgans);
             this.listObservPlansTableAdapter.Fill(this.dbIcmDataSet.listObservPlans);
+            
 
+            if (this.HasCard(new L761Card()))
+            {
+                cbCards.Items.Add(new L761Card());
+            } 
+            
+            if (this.HasCard(new E154Card())) {
+                cbCards.Items.Add(new E154Card());
+            }
+
+            if (cbCards.Items.Count == 0)
+            {
+                cbCards.Items.Add(new { CardName = "--- Карты не найдены ---" });
+            }
+
+            cbCards.DisplayMember = "CardName";
+            this.cbCards.SelectedIndexChanged += new System.EventHandler(this.cbCards_SelectedIndexChanged);
+            cbCards.SelectedIndex = 0;
+        }
+
+        private bool HasCard(ADCCard card)
+        {
+            var result = card.InitCard(160);
+            card.StopCard();
+            return result;
         }
 
         private void cbObservPlans_SelectedValueChanged(object sender, EventArgs e)
@@ -115,11 +140,16 @@ namespace DKMObserver
             }
         }
 
+        private void checkButtonsEnabled()
+        {
+            var pd = (trPlanDetail.SelectedNode) != null ? trPlanDetail.SelectedNode.Tag as Organ : null;
+            btnStart.Enabled = (pd != null) && (pd.code != null) && (cbCards.SelectedItem != null) && (cbCards.SelectedItem is ADCCard);
+            btnMonitor.Enabled = (pd != null) && (pd.code != null) && (cbCards.SelectedItem != null) && (cbCards.SelectedItem is ADCCard);
+        }
+
         private void trPlanDetail_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var pd = e.Node.Tag as Organ;
-            btnStart.Enabled = (pd != null) && (pd.code != null);
-            btnMonitor.Enabled = (pd != null) && (pd.code != null);
+            this.checkButtonsEnabled();
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -131,8 +161,7 @@ namespace DKMObserver
 
             if (wf.ShowDialog() == DialogResult.OK)
             {
-                //var card = new CardImitator();
-                var card = new L761Card();
+                var card = cbCards.SelectedItem as ADCCard;
                 
                 var reader = new DataReader(card, (int)nFreq.Value, (int)nDiagLen.Value);
 
@@ -212,6 +241,11 @@ namespace DKMObserver
             {
                 MessageBox.Show(this, "Операция отменена пользователем", "Операция отменена", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void cbCards_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.checkButtonsEnabled();
         }
     }
 }
