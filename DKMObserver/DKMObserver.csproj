@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>chest_xray_icon_179657.ico</ApplicationIcon>
+    <ApplicationIcon>symptom_illness_ailment_diagnosis_checkup_coronavirus_contagion_icon_141094.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -178,7 +178,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="chest_xray_icon_179657.ico" />
     <Content Include="compress.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -192,6 +191,7 @@
       <DependentUpon>icmDbModel.edmx</DependentUpon>
       <LastGenOutput>icmDbModel.cs</LastGenOutput>
     </Content>
+    <Content Include="symptom_illness_ailment_diagnosis_checkup_coronavirus_contagion_icon_141094.ico" />
     <Content Include="uncompress.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
