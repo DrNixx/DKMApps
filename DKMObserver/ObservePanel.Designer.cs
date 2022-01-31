@@ -30,8 +30,8 @@ namespace DKMObserver
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.listObservPlansBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dbIcmDataSet = new DKMObserver.dbIcmDataSet();
             this.listObservPlansTableAdapter = new DKMObserver.dbIcmDataSetTableAdapters.listObservPlansTableAdapter();
@@ -47,6 +47,7 @@ namespace DKMObserver
             this.label1 = new System.Windows.Forms.Label();
             this.cbObservPlans = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.lbPatient = new System.Windows.Forms.Label();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel4 = new System.Windows.Forms.Panel();
             this.nDiagLen = new System.Windows.Forms.NumericUpDown();
@@ -108,13 +109,14 @@ namespace DKMObserver
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.btnStart);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 282);
+            this.panel1.Location = new System.Drawing.Point(0, 386);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 66);
             this.panel1.TabIndex = 19;
             // 
             // btnClose
             // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.Location = new System.Drawing.Point(636, 8);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(152, 46);
@@ -143,7 +145,7 @@ namespace DKMObserver
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(8);
-            this.panel2.Size = new System.Drawing.Size(370, 282);
+            this.panel2.Size = new System.Drawing.Size(370, 386);
             this.panel2.TabIndex = 20;
             // 
             // trPlanDetail
@@ -153,7 +155,7 @@ namespace DKMObserver
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trPlanDetail.Location = new System.Drawing.Point(11, 52);
             this.trPlanDetail.Name = "trPlanDetail";
-            this.trPlanDetail.Size = new System.Drawing.Size(347, 230);
+            this.trPlanDetail.Size = new System.Drawing.Size(347, 334);
             this.trPlanDetail.TabIndex = 10;
             this.trPlanDetail.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trPlanDetail_AfterSelect);
             // 
@@ -180,26 +182,36 @@ namespace DKMObserver
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.lbPatient);
             this.panel3.Controls.Add(this.chart1);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(370, 0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(0, 0, 8, 0);
-            this.panel3.Size = new System.Drawing.Size(430, 282);
+            this.panel3.Size = new System.Drawing.Size(430, 386);
             this.panel3.TabIndex = 21;
+            // 
+            // lbPatient
+            // 
+            this.lbPatient.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbPatient.Location = new System.Drawing.Point(7, 204);
+            this.lbPatient.Name = "lbPatient";
+            this.lbPatient.Size = new System.Drawing.Size(411, 55);
+            this.lbPatient.TabIndex = 10;
+            this.lbPatient.Text = "lbName";
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.chart1.Location = new System.Drawing.Point(0, 158);
+            this.chart1.Location = new System.Drawing.Point(0, 262);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(422, 124);
             this.chart1.TabIndex = 9;
             this.chart1.Text = "chart1";
@@ -334,7 +346,7 @@ namespace DKMObserver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 348);
+            this.ClientSize = new System.Drawing.Size(800, 452);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -342,6 +354,7 @@ namespace DKMObserver
             this.Text = "Панель съема данных";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.ObservePanel_Load);
+            this.Shown += new System.EventHandler(this.ObservePanel_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlansBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbIcmDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listObservPlanDetailsBindingSource)).EndInit();
@@ -386,5 +399,6 @@ namespace DKMObserver
         private System.Windows.Forms.ComboBox cbCards;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Label lbPatient;
     }
 }

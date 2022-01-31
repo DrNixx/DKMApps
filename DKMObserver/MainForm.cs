@@ -28,7 +28,7 @@ namespace DKMObserver
 
         ObservePanel op = null;
 
-        internal void openObserver(Guid patientId, int historyItem, string fName, string iName)
+        internal void openObserver(Guid patientId, int historyItem, string fName, string iName, string oName)
         {
             if (op != null)
             {
@@ -40,6 +40,9 @@ namespace DKMObserver
             op.MdiParent = this;
             op.patientId = patientId;
             op.historyItem = historyItem;
+            op.FName = fName;
+            op.IName = iName;
+            op.OName = oName;
             op.Show();
         }
     }

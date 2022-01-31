@@ -26,6 +26,10 @@ namespace DKMObserver
 
         public int historyItem { get; set; }
 
+        public string FName { get; set; }
+        public string IName { get; set; }
+        public string OName { get; set; }
+
         public ObservePanel()
         {
             db = new dbIcmEntities();
@@ -37,8 +41,14 @@ namespace DKMObserver
             db.Dispose();
         }
 
+        private void SetPatient()
+        {
+            lbPatient.Text = FName + ' ' + IName + ' ' + OName;
+        }
+
         private void ObservePanel_Load(object sender, EventArgs e)
         {
+            this.SetPatient();
             this.listOrgansTableAdapter.Fill(this.dbIcmDataSet.listOrgans);
             this.listObservPlansTableAdapter.Fill(this.dbIcmDataSet.listObservPlans);
             
@@ -249,6 +259,11 @@ namespace DKMObserver
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void ObservePanel_Shown(object sender, EventArgs e)
+        {
+            this.SetPatient();
         }
     }
 }

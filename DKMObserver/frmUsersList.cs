@@ -34,7 +34,7 @@ namespace DKMObserver
                 if (drv != null)
                 {
                     var row = drv.Row as DKMObserver.dbIcmDataSet.vwHistory_ObservationRow;
-                    (this.MdiParent as MainForm).openObserver(row.PatientID, row.HistoryItem, row.FName, row.IName);
+                    (this.MdiParent as MainForm).openObserver(row.PatientID, row.HistoryItem, row.FName, row.IName, row.OName);
                 }
             }
         }
