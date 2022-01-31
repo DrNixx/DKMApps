@@ -194,6 +194,8 @@ namespace DKMObserver
             // 
             // lbPatient
             // 
+            this.lbPatient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbPatient.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbPatient.Location = new System.Drawing.Point(7, 204);
             this.lbPatient.Name = "lbPatient";
