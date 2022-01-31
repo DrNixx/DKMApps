@@ -42,10 +42,12 @@ namespace LCardLib
                 var start = card.StartRead();
                 if (start)
                 {
+                    /*
                     for (var i = 0; i < this.freq; i++)
                     {
                         card.ReadValue(false);
                     }
+                    */
 
                     buffer.Clear();
                     var simpleCountMax = diagLen * this.freq;
@@ -56,7 +58,10 @@ namespace LCardLib
 
                         if (progress != null)
                         {
-                            progress.Report(val);
+                            if (buffer.Count % this.freq == 0)
+                            {
+                                progress.Report(val);
+                            }
                         }
                         
                     } while (card.IsReading && buffer.Count < simpleCountMax);
