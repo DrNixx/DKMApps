@@ -21,6 +21,24 @@ namespace DKMObserver
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.Maximised)
+            {
+                Location = Properties.Settings.Default.Location;
+                WindowState = FormWindowState.Maximized;
+                Size = Properties.Settings.Default.Size;
+            }
+            else if (Properties.Settings.Default.Minimised)
+            {
+                Location = Properties.Settings.Default.Location;
+                WindowState = FormWindowState.Minimized;
+                Size = Properties.Settings.Default.Size;
+            }
+            else
+            {
+                Location = Properties.Settings.Default.Location;
+                Size = Properties.Settings.Default.Size;
+            }
+
             form = new frmUsersList();
             form.MdiParent = this;
             form.Show();

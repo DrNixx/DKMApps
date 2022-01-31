@@ -13,7 +13,7 @@
     <Setting Name="Location" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
     </Setting>
-    <Setting Name="Size" Type="System.Drawing.Point" Scope="User">
+    <Setting Name="Size" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">816, 489</Value>
     </Setting>
     <Setting Name="Maximised" Type="System.Boolean" Scope="User">
