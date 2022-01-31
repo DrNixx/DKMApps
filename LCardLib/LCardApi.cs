@@ -3,10 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace LCardLib
 {
-    
-
-    
-
     public static class LCardApi
     {
         // ERROR CODES
@@ -33,8 +29,6 @@ namespace LCardLib
         public const int L_STREAM_TTLOUT = 4;
         public const int L_STREAM_FMETER = 5;
         public const int L_STREAM_DDS = 6;
-
-
 
 #if WIN64
         const string WLCompDll = "wlcomp64.dll";

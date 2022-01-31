@@ -1,15 +1,12 @@
-﻿using DKMObserver.dbIcmDataSetTableAdapters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace DKMObserver
 {
@@ -20,90 +17,30 @@ namespace DKMObserver
             InitializeComponent();
         }
 
-        private static short[] test = { 1, 2, 333, 276, 33, 221, 228, 22, 11, 98, 14 };
-
-        private byte[] testData;
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //var en = Compressor.CompressArray(test);
-            //Console.Write(en);
-
-            //var bytes = Compressor.ShortToByte(test);
-            //var test2 = Compressor.ByteToShort(bytes);
-
-            var td = new dbIcmDataSet.hstObservationDetailDataDataTable();
-            var ad = new hstObservationDetailDataTableAdapter();
-            ad.Fill(td);
-
-            foreach (dbIcmDataSet.hstObservationDetailDataRow row in td.Rows)
-            {
-                var str = System.Text.Encoding.GetEncoding(1251).GetString(row.Data);
-                //var str = System.Text.Encoding.Default.GetString(row.Data);
-                //var str = System.Text.Encoding.ASCII.GetString(row.Data);
-                
-                var re = new Regex("(?<=<Sample\\sBegTime=\"\\d+\"\\sComment=\"\"\\sFrequency=\"\\d+\">)(.*)(?=</Sample>)", RegexOptions.Singleline);
-                var s = re.Matches(str);
-                var dataStr = s[0].Groups[1].Value.Replace("&amp;", "&").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"");
-                var data = System.Text.Encoding.GetEncoding(1251).GetBytes(dataStr);
-                var samples = Compressor.UncompressArray(data);
-                Console.WriteLine(samples.Length);
-                var newData = Compressor.CompressArray(samples);
-                str = re.Replace(str, "data");
-                // var x = System.Xml.Linq.XDocument.Parse(str);
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(str);
-                XmlElement xRoot = xDoc.DocumentElement;
-                if (xRoot != null)
-                {
-                    foreach (XmlElement xnode in xRoot)
-                    {
-                        Console.WriteLine();
-                    }
-                }
-            }
-        }
+        frmUsersList form;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "dbIcmDataSet.vwHistory_Observation". При необходимости она может быть перемещена или удалена.
-            this.vwHistory_ObservationTableAdapter.FillBy100(this.dbIcmDataSet.vwHistory_Observation);
-
+            form = new frmUsersList();
+            form.MdiParent = this;
+            form.Show();
         }
 
-        private void btnOpenObserver_Click(object sender, EventArgs e)
+        ObservePanel op = null;
+
+        internal void openObserver(Guid patientId, int historyItem, string fName, string iName)
         {
-            if (dgvObserves.CurrentRow != null)
+            if (op != null)
             {
-                var drv = dgvObserves.CurrentRow.DataBoundItem as DataRowView;
-                if (drv != null)
-                {
-                    var row = drv.Row as DKMObserver.dbIcmDataSet.vwHistory_ObservationRow;
-;
-                    Console.WriteLine(row.PatientID);
-                    //var item = row.HistoryItem;
-                    //var 
-
-                    var op = new ObservePanel();
-                    op.patientId = row.PatientID;
-                    op.historyItem = row.HistoryItem;
-                    op.ShowDialog();
-                }
-            }
-            
-        }
-
-        private void fillBy100ToolStripButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                this.vwHistory_ObservationTableAdapter.FillBy100(this.dbIcmDataSet.vwHistory_Observation);
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
+                op.Close();
+                op.Dispose();
             }
 
+            op = new ObservePanel();
+            op.MdiParent = this;
+            op.patientId = patientId;
+            op.historyItem = historyItem;
+            op.Show();
         }
     }
 }

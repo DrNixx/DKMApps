@@ -144,7 +144,6 @@ namespace DKMObserver
         {
             var pd = (trPlanDetail.SelectedNode) != null ? trPlanDetail.SelectedNode.Tag as Organ : null;
             btnStart.Enabled = (pd != null) && (pd.code != null) && (cbCards.SelectedItem != null) && (cbCards.SelectedItem is ADCCard);
-            btnMonitor.Enabled = (pd != null) && (pd.code != null) && (cbCards.SelectedItem != null) && (cbCards.SelectedItem is ADCCard);
         }
 
         private void trPlanDetail_AfterSelect(object sender, TreeViewEventArgs e)
@@ -156,6 +155,9 @@ namespace DKMObserver
         {
             var result = true;
             btnStart.Enabled = false;
+
+            chart1.Series[0].Points.Clear();
+            chart1.Visible = true;
 
             var wf = new WaitForm((int)nPause.Value);
 
@@ -229,23 +231,24 @@ namespace DKMObserver
                 db.SaveChanges();
             }
 
-            
 
+            chart1.Visible = false;
             btnStart.Enabled = result;
-        }
-
-        private void btnMonitor_Click(object sender, EventArgs e)
-        {
-            var wait = new WaitForm((int)nPause.Value);
-            if (wait.ShowDialog() != DialogResult.OK)
-            {
-                MessageBox.Show(this, "Операция отменена пользователем", "Операция отменена", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
 
         private void cbCards_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.checkButtonsEnabled();
+        }
+
+        private void btnStart_EnabledChanged(object sender, EventArgs e)
+        {
+            btnStart.BackColor = btnStart.Enabled ? Color.FromArgb(0, 192, 0) : SystemColors.Control;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

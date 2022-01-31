@@ -117,4 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="vwHistoryObservationBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>145, 17</value>
+  </metadata>
+  <metadata name="dbIcmDataSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="dbIcmDataSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="vwHistory_ObservationTableAdapter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>395, 17</value>
+  </metadata>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>645, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tbRefresh.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGySURBVDhPjZJNK0RhFMevhZIiG2Er8gksZLKUvRKJvSyU
+        JT6DlYX3l5JQFkixZpSdNDYzMUM0JYzunTszWczj/I7nGVMz5NSpZ87/5bzc8XK5nPkrM5lMk2fD9/1m
+        +/wJSN7gatVMv36UDIrFYmMQBI/ZbHZX3g0qJv5rILyVxdOYWTi5YbKrkgkGEOcPr381yOfz/an0u2kY
+        3dI6JjLJjhrIY+Du+c3Uj2wqOL1+WWEgTSK+Hzw6rG54w9ymXpikxwvDcG1qLapAZPbIhOHPSuUrSKNW
+        38899c4cKTa5fC7ccMuTw9x3Tu5pce88rpevZkAINr5/EVesfWLXcFS9Qe3QuhaTsie/EZJMU24gU7TB
+        cQ20mbh8OgMOVSgUuhC5NMbUWL2uAQcuGrQYJDvsCgfRBK5jll8RYHDgokFLcdkdsW/u2Mi1HwRosZpS
+        UAODAxcNWr5Cd+LpVT+NAyDSjZFJ3tRcI7ho0Kq7PLaXzmIKukkYlX1J3q4zCReNign+59LlCsBNUi3B
+        4MBFY+XfQQFXRmNUjsSlSd7U7NjbFeLyYC+Ow4UlP20mqYFZmg3P+wJc5mQ8sWeyowAAAABJRU5ErkJg
+        gg==
+</value>
+  </data>
+  <data name="tbOpenObserver.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEUSURBVDhPrZOxTsMwEIY9dWZh7yMg8QaZydqn6M7SoVNW
+        XgCx5g1YmTPxCA1SVXWqobaT0eSzfKlJUhQJTvqjk3P/57NzUcNomuapk/9F71rrm1g+jrqufZ7nPsuy
+        SZVlGSBt2y6j5WewC4Wf+mskgRRFAURba++i7RJzACkk2pSiJc4GoKoq76zz57O5CkDUBjOtQIvyh8cs
+        yBgbZDulIIEFADtj3K/vg+n0+uzrh0UQOWu8G0J6QGxbUyjGoaSbSYBz7s0Ys5Odjy+bvoicNd4BSO+k
+        B/CQ3T9Wt71RQGkXXOz/A/58hLmXyAhjEjHuATD3M1I8VNf9djRIHAcTIpf1yblPQ0aZO4GOyFm7+ucp
+        pb4BFk6pD8g014QAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="FName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="IName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="OName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Birthday.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="SortOrder.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>
