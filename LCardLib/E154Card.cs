@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,27 +44,36 @@ namespace LCardLib
             Amplification = DefE154Amplification;
         }
 
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         public override bool InitCard(int readFreq)
         {
-            if (IsPresent)
+            try
             {
-                StopCard();
-            }
+                if (IsPresent)
+                {
+                    StopCard();
+                }
 
-            IsPresent = false;
-            Freq = readFreq;
+                IsPresent = false;
+                Freq = readFreq;
 
-            if (LCardApi.OpenSlot(DefE154Slot) && (LCardApi.OpenLDevice() != LCardApi.INVALID_HANDLE_VALUE))
+                if (LCardApi.OpenSlot(DefE154Slot) && (LCardApi.OpenLDevice() != LCardApi.INVALID_HANDLE_VALUE))
+                {
+                    this.IsPresent =
+                        LCardApi.ReadPlataDescr(out this.FPlata_Desc) &
+                        LCardApi.PlataTest();
+                }
+
+
+                fReading = false;
+
+                return IsPresent;
+            } 
+            catch
             {
-                this.IsPresent =
-                    LCardApi.ReadPlataDescr(out this.FPlata_Desc) &
-                    LCardApi.PlataTest();
+                return false;
             }
-
-
-            fReading = false;
-
-            return IsPresent;
         }
 
         public override int ReadValue(bool stopCondition = false)

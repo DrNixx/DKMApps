@@ -74,9 +74,15 @@ namespace DKMObserver
 
         private bool HasCard(ADCCard card)
         {
-            var result = card.InitCard(160);
-            card.StopCard();
-            return result;
+            try
+            {
+                var result = card.InitCard(160);
+                card.StopCard();
+                return result;
+            }
+            catch {
+                return false;
+            }
         }
 
         private void cbObservPlans_SelectedValueChanged(object sender, EventArgs e)
@@ -161,6 +167,14 @@ namespace DKMObserver
             this.checkButtonsEnabled();
         }
 
+        private void StopCard(ADCCard card)
+        {
+            try
+            {
+                card.StopCard();
+            } catch { }
+        }
+
         private async void btnStart_Click(object sender, EventArgs e)
         {
             var result = true;
@@ -174,19 +188,42 @@ namespace DKMObserver
             if (wf.ShowDialog() == DialogResult.OK)
             {
                 var card = cbCards.SelectedItem as ADCCard;
+
+                byte[] data;
+                Organ pd;
+
+                try
+                {
+                    var reader = new DataReader(card, (int)nFreq.Value, (int)nDiagLen.Value);
+
+                    var progress = new Progress<int>(s => chart1.Series[0].Points.AddY(s));
+
+                    result = await Task.Run(() => reader.DoReadSample(progress));
+
+                    Console.WriteLine(reader.buffer.Count);
+
+                    pd = trPlanDetail.SelectedNode.Tag as Organ;
+                    data = Compressor.CompressArray(reader.buffer.ToArray());
+                    //var data = Compressor.ShortToByte(reader.buffer.ToArray());
+
+                    this.StopCard(card);
+                    reader = null;
+                }
+                catch
+                {
+                    this.StopCard(card);
+                    MessageBox.Show(
+                        "Ошибка инициализации карты.\nПопробуйте запустить исследование еще раз.\nЕсли ошибка повторится, перезапустите программу",
+                        "Ошибка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    chart1.Visible = false;
+                    btnStart.Enabled = true;
+                    return;
+                }
                 
-                var reader = new DataReader(card, (int)nFreq.Value, (int)nDiagLen.Value);
-
-                var progress = new Progress<int>(s => chart1.Series[0].Points.AddY(s));
-
-                result = await Task.Run(() => reader.DoReadSample(progress));
-
-                Console.WriteLine(reader.buffer.Count);
-
-                var pd = trPlanDetail.SelectedNode.Tag as Organ;
-
-                var data = Compressor.CompressArray(reader.buffer.ToArray());
-                //var data = Compressor.ShortToByte(reader.buffer.ToArray());
 
                 var dl = new List<byte>();
 
